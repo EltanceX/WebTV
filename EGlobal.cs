@@ -1,0 +1,231 @@
+﻿using Engine;
+using System.Collections.Generic;
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Reflection;
+using System.IO;
+using System.Text;
+using System.Xml;
+using Engine.Graphics;
+using CefSharp.OffScreen;
+using System.Drawing;
+using GameEntitySystem;
+
+namespace Game
+{
+    public class PerformanceStatistic
+    {
+        public double startTime;
+        public double runningTime;
+        public PerformanceStatistic()
+        {
+            this.startTime = util.getTime();
+        }
+        public double end()
+        {
+            return runningTime = util.getTime() - startTime;
+        }
+    }
+    public class Pattern
+    {
+        public Point3 Point;
+
+        public Vector3 Position;
+
+        public Texture2D Texture;
+
+        public string TexName;
+
+        public Vector3 Right;
+
+        public Vector3 Up;
+
+        public Engine.Color Color;
+
+        public float Size;
+    }
+
+
+
+
+
+
+    public class TickTimer
+    {
+        public double interval;
+        public double LastUpdateTime = 0;
+
+        public TickTimer(double interval = 100)
+        {
+            this.interval = interval;
+        }
+        public bool Next()
+        {
+            var tickCurrent = util.getTime();
+            if (tickCurrent - LastUpdateTime >= interval)
+            {
+                LastUpdateTime = tickCurrent;
+                return true;
+            }
+            return false;
+        }
+    }
+    public enum Direction
+    {
+        X_Positive,
+        X_Negative,
+        Y_Positive,
+        Y_Negative,
+        Z_Positive,
+        Z_Negative
+    }
+
+    public class EveryFps
+    {
+        public static void KeyboardOperation()
+        {
+
+        }
+    }
+
+
+    public class DLL
+    {
+        //public class Websocket4Net
+        //{
+        //    public static Assembly dll;
+        //    public static Type WebSocket;
+        //    public static Type MessageReceivedEventArgs;
+        //    public static Type WebSocketVersion;
+        //    public static bool IsLoaded = false;
+        //}
+        //public static Assembly Websocket4Net;
+        public class L_WebsocketSharp
+        {
+            public static Assembly assembly;
+        }
+    }
+    public class xml
+    {
+        //public xml()
+        //{
+        //XmlDocument xdoc = new XmlDocument();
+        //XmlElement e1 = xdoc.CreateElement("e1");
+        //e1.InnerText = "666";
+        //xdoc.AppendChild(e1);
+        //xdoc.RemoveChild(e1);
+        ////xdoc.pa
+        //var str = xdoc.ToString();
+        //Console.WriteLine(1);
+        //Console.WriteLine(xdoc.InnerText);
+        //// 输出结果
+        //Console.WriteLine("XML to Text:\n" + xmlToString(xdoc));
+        //Console.WriteLine("XML to Text:\n" + xmlToString(websocket.getStandardFormat("type", "data")));
+        //Console.WriteLine("XML to Text:\n" + xmlToString(websocket.getStandardFormat("type", "data")));
+        //Console.WriteLine("XML to Text:\n" + websocket.getStandardFormat("type", "data").GetElementsByTagName("SCWS")[0].InnerText);
+        //}
+        public static string xmlToString(XmlDocument doc)
+        {
+            // 将 XML 转换为文本格式
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            XmlTextWriter writer = new XmlTextWriter(sw);
+            writer.Formatting = Formatting.Indented;
+            doc.WriteTo(writer);
+            writer.Flush();
+            return sb.ToString();
+        }
+    }
+    public class EGlobal
+    {
+        public static string Version = "0.1.0";
+        public static string Date = "2024-7-9";
+        public static string UpdateInfo = @"None";
+        //public static void AssemblyInit()
+        //{
+        //    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        //    foreach (var assembly in assemblies)
+        //    {
+        //        //XLog.Information(assembly.FullName);
+        //        switch (assembly.GetName().Name)
+        //        {
+        //            case "websocket-sharp":
+        //                DLL.L_WebsocketSharp.assembly = assembly;
+        //                ScreenLog.Info($"[Init] DLL Loaded: " + assembly.FullName);
+        //                break;
+        //        }
+        //    }
+        //}
+
+        //public static string name = Process.GetCurrentProcess().ProcessName;
+        //public static PerformanceCounter cpuCounter = new PerformanceCounter("Process", "% Processor Time", name);
+        //public static PerformanceCounter ramCounter = new PerformanceCounter("Process", "Working Set", name);
+
+        public static Entity entity;
+        public static ComponentPlayer Player;
+        public static Random random = new Random(273817293);
+        public static bool isFirstLoad = true;
+        public static SubsystemTerrain terrain;
+        public static void place(int x, int y, int z, int value = 2)
+        {
+            terrain?.ChangeCell(x, y, z, Terrain.MakeBlockValue(value));
+        }
+        public static void place(float x, float y, float z, int value = 2)
+        {
+            terrain?.ChangeCell((int)MathUtils.Floor(x), (int)MathUtils.Floor(y), (int)MathUtils.Floor(z), Terrain.MakeBlockValue(value));
+        }
+        public static ComponentPlayer getPlayer()
+        {
+            return EGlobal.Player;
+        }
+        public static void setPlayer(ComponentPlayer player)
+        {
+            EGlobal.Player = player;
+        }
+    }
+    public class HammerData
+    {
+        public static int SteelHammerValue = 115;
+        public static int DiamondHammerValue = 0;
+        public static Game.GameMode GameMode;
+        public static bool isDebug = true;
+    }
+    public class util
+    {
+        public static Vector3 GetUnitVector(Vector3 vec3)
+        {
+            var len = vec3.Length();
+            return new Vector3(vec3.X / len, vec3.Y / len, vec3.Z / len);
+        }
+        private static System.Random random = new();
+        public static double RandomD(double minimum, double maximum, int Len = 1)   //Len小数点保留位数
+        {
+            return Math.Round(random.NextDouble() * (maximum - minimum) + minimum, Len);
+        }
+        public static float RandomF(float minimum, float maximum, int Len = 1)   //Len小数点保留位数
+        {
+            return (float)Math.Round(random.NextDouble() * (maximum - minimum) + minimum, Len);
+        }
+        public static string Progress(double per, int len)
+        {
+            if (per > 1) return per.ToString();
+            return $"[{new String(' ', (int)(len * (1 - per))).PadLeft(len, '|')}]";
+        }
+        public static float VectorProjection(Vector3 vec, Vector3 target)
+        {
+            return (vec.X * target.X + vec.Y * target.Y + vec.Z * target.Z) / MathUtils.Sqrt(MathUtils.Pow(target.X, 2) + MathUtils.Pow(target.Y, 2) + MathUtils.Pow(target.Z, 2));
+        }
+        public static string uuid()
+        {
+            return Guid.NewGuid().ToString();
+        }
+        public static double getTime()
+        {
+            DateTime dateTime = DateTime.Now;
+            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            return (dateTime - startTime).TotalMilliseconds;
+
+        }
+    }
+}
