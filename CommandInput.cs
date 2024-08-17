@@ -312,6 +312,8 @@ ETerminal 控制台组件
                 //    break;
                 case "/cef":
                     string parameter1;
+                    CEF_Browser CefIns = WebTV.getInstance();
+                    if (CefIns == null) return;
                     try
                     {
                         parameter1 = parsed.arr[0].ToString();
@@ -337,19 +339,19 @@ ETerminal 控制台组件
                             {
                                 ScreenLog.Info("URL格式错误！自动设置为www.baidu.com");
                             }
-                            if (browserData.Browser != null)
+                            if (CefIns.Browser != null)
                             {
                                 ScreenLog.Info("浏览器已存在！");
-                                browserData.Browser.Load(cef_url);
+                                CefIns.Browser.Load(cef_url);
                                 return;
                             }
-                            browserData.Create(cef_url);
+                            CefIns.Create(cef_url);
                             break;
                         case "stop":
-                            browserData.Browser.Load("about:blank");
+                            CefIns.Browser.Load("about:blank");
                             break;
                         case "close":
-                            browserData.Close();
+                            CefIns.Close();
                             break;
                         default:
                             ScreenLog.Info("未知的参数类型！");

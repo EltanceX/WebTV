@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using CefSharp;
+using CefSharp.OffScreen;
 using Engine;
 using Engine.Graphics;
 using Engine.Input;
@@ -107,19 +108,22 @@ namespace Game
         {
             this.camera = camera;
 
+            CEF_Browser CefIns = WebTV.getInstance();
+            if (CefIns == null) return;
 
-            if (browserData.isFocused && browserData.Browser != null && browserData.updated && browserData.isTextureDrawingCompleted)//&& util.getTime() - browserData.lastUpdatedTime >= 10)
+
+            if (CefIns.isFocused && CefIns.Browser != null && CefIns.updated && CefIns.isTextureDrawingCompleted)//&& util.getTime() - browserData.lastUpdatedTime >= 10)
             {
                 //Task.Run(delegate
                 //{
                 //    CEF_Browser.updateTexture();
                 //});
-                CEF_Browser.updateTexture();
+                CefIns.updateTexture();
 
-                browserData.updated = false;
+                CefIns.updated = false;
             }
 
-            if (browserData.p != null)
+            if (CefIns.pattern != null)
             {
 
                 //ScreenLog.Info(Mouse.MouseWheelMovement);
@@ -130,17 +134,17 @@ namespace Game
                 //{
                 //Vector3 v5 = new Vector3(browserData.pos.X, browserData.pos.Y, browserData.pos.Z);
                 FlatBatch3D flatBatch3D = m_primitivesRenderer3D2.FlatBatch();
-                BoundingBox boundingBox = new BoundingBox(browserData.posVec, browserData.posVec + new Vector3(1f));
+                BoundingBox boundingBox = new BoundingBox(CefIns.posVec, CefIns.posVec + new Vector3(1f));
                 flatBatch3D.QueueBoundingBox(boundingBox, Color.Orange);
 
 
                 Vector3 unitForwardVec = Vector3.Normalize(forwardVector);
                 Vector3 eyePosition = EGlobal.Player.ComponentCreatureModel.EyePosition;
                 //视角到屏幕点的向量
-                Vector3 posV = browserData.posVec - eyePosition;
-                cosPosV_ScreenNormalV = Vector3.Dot(posV, browserData.ScreenNormalVector) / (posV.Length() * browserData.ScreenNormalVector.Length());
+                Vector3 posV = CefIns.posVec - eyePosition;
+                cosPosV_ScreenNormalV = Vector3.Dot(posV, CefIns.ScreenNormalVector) / (posV.Length() * CefIns.ScreenNormalVector.Length());
                 //ScreenLog.Info(cosPosV_ScreenNormalV);
-                cosScreenNormalV_EyeV = Vector3.Dot(forwardVector, browserData.ScreenNormalVector) / (forwardVector.Length() * browserData.ScreenNormalVector.Length());
+                cosScreenNormalV_EyeV = Vector3.Dot(forwardVector, CefIns.ScreenNormalVector) / (forwardVector.Length() * CefIns.ScreenNormalVector.Length());
                 if (cosScreenNormalV_EyeV > 0.2 && cosPosV_ScreenNormalV > 0)
                 {
                     //ScreenLog.Info($"A {cosScreenNormalV_EyeV} {cosPosV_ScreenNormalV}");
@@ -158,38 +162,53 @@ namespace Game
 
                         //if (Mouse.IsMouseButtonDown(MouseButton.Left))
                         //{
-                        Vector3 relativeVec = targetPointVec - browserData.posVec;
+                        Vector3 relativeVec = targetPointVec - CefIns.posVec;
                         //ScreenLog.Info($"{relativeVec.X} {relativeVec.Y} {relativeVec.Z}");
-                        if (browserData.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < browserData.IngameWidth && relativeVec.Y < browserData.IngameHeight)
+                        if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
                         {
-                            float x = relativeVec.X / browserData.IngameWidth * browserData.width;
-                            float y = relativeVec.Y / browserData.IngameHeight * browserData.height;
-                            int upper_left_X = (int)(browserData.width - x);
-                            int upper_left_Y = (int)(browserData.height - y);
+                            float x = relativeVec.X / CefIns.IngameWidth * CefIns.width;
+                            float y = relativeVec.Y / CefIns.IngameHeight * CefIns.height;
+                            int upper_left_X = (int)(CefIns.width - x);
+                            int upper_left_Y = (int)(CefIns.height - y);
                             //ScreenLog.Info($"MouseMove Event: {upper_left_X} {upper_left_Y}");
                             var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
-                            var browserHost = browserData.Browser.GetBrowserHost();
+                            var browserHost = CefIns.Browser.GetBrowserHost();
                             browserHost.SendMouseMoveEvent(mouseEvent, false);
-                            if (!browserData.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
+                            if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
                             {
-                                ScreenLog.Info("Set Click State: True");
+                                ScreenLog.Info("Set Left Click State: True");
                                 browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
                                 //browserHost.
-                                browserData.hasMouseDown = true;
+                                CefIns.hasMouseDown = true;
                             }
-                            else if (browserData.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
+                            else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
                             {
-                                ScreenLog.Info("Set Click State: False");
-                                browserData.hasMouseDown = false;
+                                ScreenLog.Info("Set Left Click State: False");
+                                CefIns.hasMouseDown = false;
                                 browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
                             }
+
+                            if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
+                            {
+                                ScreenLog.Info("Set Right Click State: True");
+                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
+                                //browserHost.
+                                CefIns.hasRightMouseDown = true;
+                            }
+                            else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
+                            {
+                                ScreenLog.Info("Set Right Click State: False");
+                                CefIns.hasRightMouseDown = false;
+                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
+                            }
+
                             if (Mouse.MouseWheelMovement > 0)
                             {
-                                browserData.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
+                                CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
                             }
                             else if (Mouse.MouseWheelMovement < 0)
                             {
-                                browserData.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
+                                CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
                             }
 
                         }
@@ -207,13 +226,13 @@ namespace Game
 
 
 
-                var pattern = browserData.p;
+                var pattern = CefIns.pattern;
                 if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
                 {
-                    browserData.isFocused = false;
+                    CefIns.isFocused = false;
                     return;
                 }
-                browserData.isFocused = true;
+                CefIns.isFocused = true;
 
                 Vector3 vector = pattern.Position - camera.ViewPosition;
                 if (vector.Length() < m_subsystemSky.ViewFogRange.Y)

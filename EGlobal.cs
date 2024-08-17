@@ -11,9 +11,56 @@ using Engine.Graphics;
 using CefSharp.OffScreen;
 using System.Drawing;
 using GameEntitySystem;
+using System.Collections;
 
 namespace Game
 {
+    public static class WebTV
+    {
+        public static ArrayList cefInstances = new ArrayList();
+        public static bool RemoveInstanece(CEF_Browser cef)
+        {
+            try
+            {
+                cefInstances.Remove(cef);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public static CEF_Browser CreateInstanece()
+        {
+            CEF_Browser cef = new CEF_Browser();
+            cefInstances.Add(cef);
+            return cef;
+        }
+        public static void CloseAll()
+        {
+            foreach (CEF_Browser item in cefInstances)
+            {
+                item.Close();
+                RemoveInstanece(item);
+            }
+        }
+        public static CEF_Browser getInstance()
+        {
+            if (WebTV.cefInstances.Count > 0)
+            {
+                return (CEF_Browser)cefInstances[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public static class settings
+        {
+            public static string defaultLink = "www.baidu.com";
+
+        }
+    }
     public class PerformanceStatistic
     {
         public double startTime;
@@ -139,8 +186,8 @@ namespace Game
     }
     public class EGlobal
     {
-        public static string Version = "0.1.0";
-        public static string Date = "2024-7-9";
+        public static string Version = "0.1.3";
+        public static string Date = "2024-8-17";
         public static string UpdateInfo = @"None";
         //public static void AssemblyInit()
         //{

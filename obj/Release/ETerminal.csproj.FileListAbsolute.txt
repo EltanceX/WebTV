@@ -357,3 +357,17 @@ C:\Users\EltanceX\source\repos\ETerminal\obj\Release\ETerminal.csproj.CoreCompil
 C:\Users\EltanceX\source\repos\ETerminal\obj\Release\ETerminal.csproj.Up2Date
 C:\Users\EltanceX\source\repos\ETerminal\obj\Release\ETerminal.dll
 C:\Users\EltanceX\source\repos\ETerminal\obj\Release\ETerminal.pdb
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\Engine.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\EntitySystem.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\Survivalcraft.exe
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\Jint.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\Esprima.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Memory.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Numerics.Vectors.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Buffers.dll
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\Esprima.xml
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Memory.xml
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Numerics.Vectors.xml
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\EltanceX\source\repos\ETerminal\bin\Release\System.Buffers.xml

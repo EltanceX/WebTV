@@ -94,7 +94,7 @@ namespace Game
             //m_shoplevelLabel = Children.Find<LabelWidget>("ShopLevelLabel");
             //m_soldSlot.AssignInventorySlot(componentShop, componentShop.SoldSlotIndex);
             ScreenPositionTextbox.Text = $"{MathUtils.Floor(playerPosition.X)}, {MathUtils.Floor(playerPosition.Y)}, {MathUtils.Floor(playerPosition.Z)}";
-            SiteAddrDialog.Text = browserData.link;
+            SiteAddrDialog.Text = WebTV.settings.defaultLink;
         }
 
         //public override void MeasureOverride(Vector2 parentAvailableSize)
@@ -208,6 +208,10 @@ namespace Game
             //    ItemValue = value;
             //}));
             //}
+            CEF_Browser CefIns = WebTV.getInstance();
+
+
+
             ResolvingPowerLabel.Text = $"分辨率: {ResolvingPower_Width}*{ResolvingPower_Height}";
 
             if (ResolvingPowerBtn.IsClicked)
@@ -220,24 +224,26 @@ namespace Game
             }
             else if (CreatePreviewButton.IsClicked)
             {
+                //CEF_Browser CefIns;
                 try
                 {
+                    CefIns = WebTV.CreateInstanece();
                     //ScreenLog.Info(ScreenPositionTextbox.Text);
                     string[] posArr = ScreenPositionTextbox.Text.Split(',');
                     if (posArr.Length != 3) throw new Exception("非法的坐标长度！");
                     playerPosition.X = float.Parse(posArr[0]);
                     playerPosition.Y = float.Parse(posArr[1]);
                     playerPosition.Z = float.Parse(posArr[2]);
-                    browserData.link = SiteAddrDialog.Text;
-                    browserData.width = ResolvingPower_Width;
-                    browserData.height = ResolvingPower_Height;
+                    CefIns.link = SiteAddrDialog.Text;
+                    CefIns.width = ResolvingPower_Width;
+                    CefIns.height = ResolvingPower_Height;
                 }
                 catch (Exception e)
                 {
                     m_componentPlayer.ComponentGui.DisplaySmallMessage(e.ToString(), Color.Red, false, true);
                     return;
                 }
-                browserData.posVec = playerPosition;
+                CefIns.posVec = playerPosition;
 
 
                 try
@@ -246,19 +252,19 @@ namespace Game
                     float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
                     Pattern pattern = new Pattern
                     {
-                        Point = new Point3(browserData.posVec),
+                        Point = new Point3(CefIns.posVec),
                         Color = Color.White,
                         Size = size,// / 20.418f,
                         TexName = "ICON",
-                        Position = new Vector3(browserData.posVec.X, browserData.posVec.Y, browserData.posVec.Z),
+                        Position = new Vector3(CefIns.posVec.X, CefIns.posVec.Y, CefIns.posVec.Z),
                         Up = new Vector3(0f, UpProportion, 0f),
                         Right = new Vector3(1f, 0f, 0f)
                     };
                     MemoryStream pngStream = new();
-                    int cef_width = browserData.width;
-                    int cef_height = browserData.height;
-                    browserData.IngameWidth = size;
-                    browserData.IngameHeight = size * UpProportion;
+                    int cef_width = CefIns.width;
+                    int cef_height = CefIns.height;
+                    CefIns.IngameWidth = size;
+                    CefIns.IngameHeight = size * UpProportion;
                     var bmPNG = new System.Drawing.Bitmap(cef_width, cef_height);
 
                     //绘制文字
@@ -269,7 +275,7 @@ namespace Game
                     //蓝色画笔
                     System.Drawing.Pen bluePen = new(System.Drawing.Color.GreenYellow, 5);
                     g.DrawRectangle(bluePen, 10, 10, cef_width - 10, cef_height - 10);
-                    g.DrawString($"\n  WebTV Mod - {DateTime.Now}\n  Size: {cef_width} * {cef_height} ({browserData.posVec.X}, {browserData.posVec.Y}, {browserData.posVec.Z})\n  Site Link: {browserData.link}\n  Browser screen ready.", font, brush, textArea);
+                    g.DrawString($"\n  WebTV Mod - {DateTime.Now}\n  Size: {cef_width} * {cef_height} ({CefIns.posVec.X}, {CefIns.posVec.Y}, {CefIns.posVec.Z})\n  Site Link: {CefIns.link}\n  Browser screen ready.", font, brush, textArea);
                     g.Dispose();
 
                     System.Drawing.Image image = bmPNG;// System.Drawing.Bitmap.FromFile("D:\\SurvivalCraft\\Temp\\icon.png");
@@ -279,8 +285,8 @@ namespace Game
                     pngStream.Dispose();
                     image.Dispose();
 
-                    browserData.p = pattern;
-                    browserData.initPreview = true;
+                    CefIns.pattern = pattern;
+                    CefIns.initPreview = true;
                 }
                 catch (Exception e2)
                 {
@@ -290,19 +296,19 @@ namespace Game
             }
             else if (CreateBrowserButton.IsClicked)
             {
-                browserData.link = SiteAddrDialog.Text;
-                if (!browserData.initPreview)
+                if (CefIns == null || !CefIns.initPreview)
                 {
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("错误: 浏览器需要在预览屏幕上进行创建", Color.Red, false, true);
                 }
                 else
                 {
-                    if (browserData.Browser != null)
+                    if (CefIns.Browser != null)
                     {
+                        CefIns.link = SiteAddrDialog.Text;
                         m_componentPlayer.ComponentGui.DisplaySmallMessage("浏览器已存在，正在尝试加载页面...", Color.Orange, false, true);
                         try
                         {
-                            browserData.Browser.Load(browserData.link);
+                            CefIns.Browser.Load(CefIns.link);
                         }
                         catch (Exception e)
                         {
@@ -310,14 +316,14 @@ namespace Game
                         }
                         return;
                     }
-                    browserData.Create();
+                    CefIns.Create();
                 }
             }
             else if (ClosePageButton.IsClicked)
             {
-                if (browserData.Browser != null)
+                if (CefIns != null && CefIns.Browser != null)
                 {
-                    browserData.Browser.Load("about:blank");
+                    CefIns.Browser.Load("about:blank");
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("当前标签页已关闭", Color.Green, false, true);
                     return;
                 }
@@ -325,8 +331,9 @@ namespace Game
             }
             else if (CloseBrowserButton.IsClicked)
             {
-                if (browserData.Browser != null) {
-                    browserData.Close();
+                if (CefIns != null && CefIns.Browser != null)
+                {
+                    CefIns.Close();
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("浏览器已成功关闭", Color.Green, false, true);
                     return;
                 }

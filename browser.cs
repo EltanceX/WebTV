@@ -62,42 +62,83 @@ namespace Game
 {
     public class browserData
     {
-        public static bool updated = false;
-        public static double lastUpdatedTime = 0;
-        public static bool isTextureDrawingCompleted = true;
-        public static bool isFocused = true;
-        public static int height = 600;
-        public static int width = 1000;
-        public static string link = "baidu.com";
-        public static bool initPreview = false;
-        public static float IngameHeight = 6;
-        public static float IngameWidth = 10;
-        public static bool hasMouseDown = false;
+
         //public static TickTimer MessageTick = new TickTimer(1000);
 
-        public static Pattern p;
 
-        public static ChromiumWebBrowser Browser = null;
+        //public static MemoryStream memoryStream = new();
 
-        public static Bitmap bitmap;
+        //public static bool Close()
+        //{
+        //    try
+        //    {
+        //        if (Browser == null || p == null) return false;
+        //        Browser.GetBrowser().CloseBrowser(true);
+        //        Browser.Dispose();
+        //        Browser = null;
+        //        p.Texture.Dispose();
+        //        p = null;
+        //        initPreview = false;
+        //        //Cef.Shutdown();
+        //        //Cef.
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ScreenLog.Info(e);
+        //    }
+        //    return true;
+        //}
+        //public static bool Create(string url = null)
+        //{
+        //    try
+        //    {
+        //        EGlobal.Player.ComponentGui.DisplaySmallMessage("正在依据预览信息创建浏览器...", Engine.Color.Orange, false, true);
+        //        CEF_Browser.CreateBrowser(url == null ? link : url);
+        //    }
+        //    catch (Exception e2)
+        //    {
+        //        ScreenLog.Info(e2);
+        //        return false;
+        //    }
+        //    return true;
+        //}
+    }
+    public class CEF_Browser
 
-        public static MemoryStream memoryStream = new();
+    {
+        public ChromiumWebBrowser Browser;
+        public string link = "www.baidu.com";
+        public Pattern pattern;
+        public bool initPreview = false;
+        public bool updated = false;
+        public double lastUpdatedTime = 0;
+        public bool isTextureDrawingCompleted = true;
+        public bool isFocused = true;
+        public float IngameHeight = 6;
+        public float IngameWidth = 10;
+        public bool hasMouseDown = false;
+        public bool hasRightMouseDown = false;
+        public Vector3 ScreenNormalVector = new Vector3(0, 0, 1);
+        public Vector3 posVec = new Vector3(105, 75, 189);
+        public Bitmap bitmap;
+        public int height = 600;
+        public int width = 1000;
 
-        public static Vector3 posVec = new Vector3(105, 75, 189);
-        public static Vector3 ScreenNormalVector = new Vector3(0, 0, 1);
-        public static bool Close()
+
+
+        public bool Close()
         {
             try
             {
-                if (Browser == null || p == null) return false;
+                if (Browser == null || pattern == null) return false;
                 Browser.GetBrowser().CloseBrowser(true);
                 Browser.Dispose();
                 Browser = null;
-                p.Texture.Dispose();
-                p = null;
+                pattern.Texture.Dispose();
+                pattern = null;
                 initPreview = false;
+                WebTV.RemoveInstanece(this);
                 //Cef.Shutdown();
-                //Cef.
             }
             catch (Exception e)
             {
@@ -105,34 +146,31 @@ namespace Game
             }
             return true;
         }
-        public static bool Create(string url = null)
+        public bool Create(string url = null)
         {
             try
             {
                 EGlobal.Player.ComponentGui.DisplaySmallMessage("正在依据预览信息创建浏览器...", Engine.Color.Orange, false, true);
-                CEF_Browser.CreateBrowser(url == null ? link : url);
+                this.CreateBrowser(url == null ? link : url);
             }
             catch (Exception e2)
             {
                 ScreenLog.Info(e2);
+                return false;
             }
             return true;
         }
-    }
-    public class CEF_Browser
-
-    {
-        public static void updateTexture()
+        public void updateTexture()
         {
 
             //ScreenLog.Info("Render_OnDraw");
-            browserData.isTextureDrawingCompleted = false;
+            this.isTextureDrawingCompleted = false;
             try
             {
                 var performance = new PerformanceStatistic();
                 MemoryStream pngStream2 = new();
                 //browserData.bitmap = ImageScaler.ScaleImage(browserData.bitmap, 0.5f);
-                browserData.bitmap.Save(pngStream2, ImageFormat.Png);
+                this.bitmap.Save(pngStream2, ImageFormat.Png);
                 pngStream2.Position = 0;
 
                 //browserData.p.Texture.Dispose();
@@ -140,7 +178,7 @@ namespace Game
                 //Texture2D.Load(pngStream2);//.Dispose();
                 //browserData.p.Texture = Texture2D.Load(pngStream2);
 
-                var tex = browserData.p.Texture;
+                var tex = this.pattern.Texture;
                 Engine.Media.Image image = Engine.Media.Image.Load(pngStream2);
                 //Engine.Media.Image[] array = Engine.Media.Image.GenerateMipmaps(image, 1).ToArray();
                 //ScreenLog.Info($"{tex.Height} {tex.Width} {tex.Height * tex.Width}");
@@ -156,7 +194,7 @@ namespace Game
 
 
 
-                browserData.bitmap.Dispose();
+                this.bitmap.Dispose();
                 pngStream2.Dispose();
             }
             catch (Exception e)
@@ -164,7 +202,7 @@ namespace Game
 
                 ScreenLog.Info("Bitmap Render Error " + e);
             }
-            browserData.isTextureDrawingCompleted = true;
+            this.isTextureDrawingCompleted = true;
         }
         public class CefLifeSpanHandler : ILifeSpanHandler
         {
@@ -221,10 +259,11 @@ namespace Game
         }
         public class RenderHandler2 : IRenderHandler
         {
-            private ChromiumWebBrowser browser;
+            public ChromiumWebBrowser browser;
+            public CEF_Browser caller;
 
-            private Size popupSize;
-            private Point popupPosition;
+            public Size popupSize;
+            public Point popupPosition;
 
             /// <summary>
             /// Need a lock because the caller may be asking for the bitmap
@@ -273,7 +312,7 @@ namespace Game
             /// Create a new instance of DefaultRenderHadler
             /// </summary>
             /// <param name="browser">reference to the ChromiumWebBrowser</param>
-            public RenderHandler2(ChromiumWebBrowser browser)
+            public RenderHandler2(ChromiumWebBrowser browser, CEF_Browser caller)
             {
                 this.browser = browser;
 
@@ -282,6 +321,7 @@ namespace Game
 
                 BitmapBuffer = new BitmapBuffer(BitmapLock);
                 PopupBuffer = new BitmapBuffer(BitmapLock);
+                this.caller = caller;
             }
 
             /// <summary>
@@ -375,7 +415,7 @@ namespace Game
             /// <param name="height">height</param>
             public virtual void OnPaint(PaintElementType type, Rect dirtyRect, IntPtr buffer, int width, int height)
             {
-                if (browserData.isFocused && browserData.isTextureDrawingCompleted)
+                if (caller.isFocused && caller.isTextureDrawingCompleted)
                 {
                     //ScreenLog.Info(":Browser_Render:");
                     try
@@ -388,10 +428,10 @@ namespace Game
                         Marshal.Copy(my_buffer, 0, bitmapData.Scan0, NumberOfBytes);
                         //Marshal.Copy(buffer, bitmapData.Scan0, 0, NumberOfBytes);
                         //bitmap.Save(browserData.memoryStream, ImageFormat.Png);
-                        browserData.bitmap = bitmap;
+                        caller.bitmap = bitmap;
                         bitmap.UnlockBits(bitmapData);
-                        browserData.updated = true;
-                        browserData.lastUpdatedTime = util.getTime();
+                        caller.updated = true;
+                        caller.lastUpdatedTime = util.getTime();
 
                     }
                     catch (Exception e)
@@ -510,9 +550,10 @@ namespace Game
 
             }
         }
-        public static async Task CreateBrowser(string URL = "https://www.baidu.com")
+        public async Task CreateBrowser(string URL = "https://www.baidu.com")
 
         {
+            link = URL;
 
 #if ANYCPU
 
@@ -522,92 +563,34 @@ namespace Game
 
 #endif
             //ScreenLog.Info("Point 1");
-            //要截取图片的网页URL
             var settings = new CefSettings()
-
             {
-
                 WindowlessRenderingEnabled = true
                 //By default CefSharp will use an in-memory cache, you need to specify a Cache Folder to persist data
                 //CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache")
             };
-            //ScreenLog.Info("Point 1.5");
+            settings.CommandLineArgsDisabled = false;
+            settings.EnableAudio();
 
-            //settings.JavascriptFlags = javascript
             //Perform dependency check to make sure all relevant resources are in our output directory.
             ScreenLog.Info(Cef.IsInitialized);
             ScreenLog.Info(Cef.IsShutdown);
             if (!Cef.IsInitialized) Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
-            //ScreenLog.Info("Point 2");
-
             // Create the offscreen Chromium browser.
             var browser = new ChromiumWebBrowser(URL);
-            //browser.scale
             //browser.SendMouseWheelEvent(0, 0, 0, 10, CefEventFlags.None);
-            browserData.Browser = browser;
-            browser.Size = new System.Drawing.Size(browserData.width, browserData.height);
-            IRenderHandler renderHandler = new RenderHandler2(browser);
+            this.Browser = browser;
+            browser.Size = new System.Drawing.Size(this.width, this.height);
+            IRenderHandler renderHandler = new RenderHandler2(browser, this);
             browser.RenderHandler = renderHandler;
-            //ScreenLog.Info("Point 3");
 
             browser.LifeSpanHandler = new CefLifeSpanHandler();
-            //browser.Size = new System.Drawing.Size(1920, 20000);
-            //browser.FrameLoadEnd += (s, e) =>{
-            //    Console.WriteLine("1加载完成 "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            //};
             //等待内容完成加载
 
             await browser.WaitForInitialLoadAsync();
             ScreenLog.Info("CEFSHARP: Browser加载完成 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             //browser.SetZoomLevel(0.1);
-
-
-            //网页截图保存地址
-
-            //string imgName = "CefSharp_screenshot" + DateTime.Now.Ticks + ".jpg";
-
-            //imgName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), imgName);
-            //ScreenLog.Info(imgName);
-            //imgName = "C:\\Users\\Administrator\\Desktop\\";
-            //Console.ReadKey();
-            //if (false)
-            //    try
-
-            //    {
-
-            //        var cefbrowserHost = browser.GetBrowserHost();
-            //        //You can call Invalidate to redraw/refresh the image
-
-            //        cefbrowserHost.Invalidate(PaintElementType.View);
-
-
-            //        //获取内容尺寸
-
-            //        var contentSize = await browser.GetContentSizeAsync();
-
-            //        var viewport = new Viewport
-            //        {
-            //            Height = 300,//contentSize.Height,
-            //            Width = 300,//contentSize.Width,
-            //            Scale = 1.0
-            //        };
-
-
-            //        ScreenLog.Info("开始截图...");
-            //        //var buffer = await browser.CaptureScreenshotAsync();
-            //        //完整网页截图
-            //        //var buffer = await browser.CaptureScreenshotAsync(viewport: viewport);
-            //        var buffer = await browser.CaptureScreenshotAsync(CaptureScreenshotFormat.Jpeg, 100, viewport);
-            //        //browser.rend
-            //        System.IO.File.WriteAllBytes(imgName, buffer);
-            //        ScreenLog.Info("截图成功，图片路径[JPEG]: " + imgName);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        string msg = ex.Message;
-            //        ScreenLog.Info("截图异常：" + msg);
-            //    }
         }
     }
 

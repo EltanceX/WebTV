@@ -12,12 +12,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ETerminal</RootNamespace>
     <AssemblyName>ETerminal</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>11.0</LangVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,21 +50,24 @@
     <Reference Include="CefSharp.OffScreen, Version=109.1.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
       <HintPath>packages\CefSharp.OffScreen.109.1.110\lib\net462\CefSharp.OffScreen.dll</HintPath>
     </Reference>
-    <Reference Include="Engine">
-      <HintPath>..\..\..\Desktop\sc\SCNET_x23.01.01.2\Engine.dll</HintPath>
+    <Reference Include="Engine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\sc\2.3API1.53\Engine.dll</HintPath>
     </Reference>
-    <Reference Include="EntitySystem">
-      <HintPath>..\..\..\Desktop\sc\2.3_API1.44\EntitySystem.dll</HintPath>
+    <Reference Include="EntitySystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\sc\2.3API1.53\EntitySystem.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\sc\2.3_API1.44\OpenTK.dll</HintPath>
+      <HintPath>E:\sc\2.3API1.53\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="Survivalcraft">
-      <HintPath>..\..\..\Desktop\sc\2.3_API1.44\Survivalcraft.exe</HintPath>
+    <Reference Include="Survivalcraft, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\sc\2.3API1.53\Survivalcraft.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

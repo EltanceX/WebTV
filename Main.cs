@@ -25,7 +25,7 @@ public class QuitHook : ModLoader
     {
         base.OnProjectDisposed();
         ScreenLog.Info("正在停止浏览器...");
-        browserData.Close();
+        WebTV.CloseAll();
 
     }
 }
@@ -34,7 +34,7 @@ public class LogSinkOverride : ModLoader
     //public override void proj
     //public override void OnProjectDisposed()
     //{
-        
+
     //    //this.on
     //    base.OnProjectDisposed();
     //    ScreenLog.Info("正在停止浏览器...");
@@ -201,6 +201,7 @@ namespace Game
         public static TextBoxDialog commandbox;
         public void Update(float dt)
         {
+            CEF_Browser CefIns = WebTV.getInstance();
             //if (mapMod != null)
             //    mapMod.Update(dt);
             //_ = componentPlayer.ComponentBody.Position;
@@ -366,27 +367,27 @@ namespace Game
             //    //        ScreenLog.Info(ex);
             //    //    }
             //}
-            else if (browserData.Browser != null)
+            else if (CefIns != null && CefIns.Browser != null)
             {
                 if (Keyboard.IsKeyDown(Key.Y))
                 {
                     //ScreenLog.Info("按键: Y, 向上滚动");
-                    browserData.Browser.SendMouseWheelEvent(0, 0, 0, 6, CefEventFlags.None);
+                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 6, CefEventFlags.None);
                 }
                 else if (Keyboard.IsKeyDown(Key.U))
                 {
                     //ScreenLog.Info("按键: U, 向下滚动");
-                    browserData.Browser.SendMouseWheelEvent(0, 0, 0, -6, CefEventFlags.None);
+                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -6, CefEventFlags.None);
                 }
                 else if (Keyboard.IsKeyDown(Key.N))
                 {
                     //ScreenLog.Info("按键: N, 向左滚动");
-                    browserData.Browser.SendMouseWheelEvent(0, 0, 6, 0, CefEventFlags.None);
+                    CefIns.Browser.SendMouseWheelEvent(0, 0, 6, 0, CefEventFlags.None);
                 }
                 else if (Keyboard.IsKeyDown(Key.M))
                 {
                     //ScreenLog.Info("按键: M, 向右滚动");
-                    browserData.Browser.SendMouseWheelEvent(0, 0, -6, 0, CefEventFlags.None);
+                    CefIns.Browser.SendMouseWheelEvent(0, 0, -6, 0, CefEventFlags.None);
                 }
             }
 
@@ -526,7 +527,7 @@ namespace Game
             //}
             EGlobal.isFirstLoad = false;
             //ScreenLog.Info("\n");
-            ScreenLog.Info("WebTV Mod - SurvivalCraft2.3 API 1.5/1.44");
+            ScreenLog.Info("WebTV Mod - SurvivalCraft2.3 API 1.53");
             ScreenLog.Info("按 / 以打开控制台，按 k 打开浏览器菜单");
             ScreenLog.Info("WebTV 模组讨论群: 328170928");
             //componentPlayer.m_subsystemGameInfo.
