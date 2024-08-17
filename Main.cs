@@ -290,7 +290,9 @@ namespace Game
                     }
                     else
                     {
-                        componentPlayer.ComponentGui.ModalPanelWidget = new BrowserWidget(componentPlayer);
+                        //componentPlayer.ComponentGui.ModalPanelWidget = new BrowserWidget(componentPlayer);
+                        WebTV.settings.KWidget.RefreshPosition();
+                        componentPlayer.ComponentGui.ModalPanelWidget = WebTV.settings.KWidget;
                     }
                 }
                 catch (Exception e)
@@ -525,6 +527,9 @@ namespace Game
             //    EGlobal.AssemblyInit();
             //    //XLog.Information("---- List of all dependency files ----");
             //}
+
+            WebTV.settings.KWidget = new BrowserWidget(componentPlayer);
+
             EGlobal.isFirstLoad = false;
             //ScreenLog.Info("\n");
             ScreenLog.Info("WebTV Mod - SurvivalCraft2.3 API 1.53");

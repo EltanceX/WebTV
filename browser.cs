@@ -107,7 +107,7 @@ namespace Game
 
     {
         public ChromiumWebBrowser Browser;
-        public string link = "www.baidu.com";
+        public string link = "https://www.bing.com/search?q=bing";
         public Pattern pattern;
         public bool initPreview = false;
         public bool updated = false;
@@ -550,7 +550,7 @@ namespace Game
 
             }
         }
-        public async Task CreateBrowser(string URL = "https://www.baidu.com")
+        public async Task CreateBrowser(string URL = "https://www.bing.com/search?q=bing")
 
         {
             link = URL;

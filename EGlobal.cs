@@ -18,6 +18,21 @@ namespace Game
     public static class WebTV
     {
         public static ArrayList cefInstances = new ArrayList();
+        public static CEF_Browser GetLastElement()
+        {
+            if (cefInstances.Count == 0) return null;
+            CEF_Browser browser = (CEF_Browser)cefInstances[cefInstances.Count - 1];
+            //if (willRemove) cefInstances.RemoveAt(cefInstances.Count - 1);
+            return browser;
+        }
+        public static CEF_Browser GetNoneBrowserCef()
+        {
+            foreach (CEF_Browser item in cefInstances)
+            {
+                if (item.Browser == null) return item;
+            }
+            return null;
+        }
         public static bool RemoveInstanece(CEF_Browser cef)
         {
             try
@@ -38,10 +53,16 @@ namespace Game
         }
         public static void CloseAll()
         {
-            foreach (CEF_Browser item in cefInstances)
+            //foreach (CEF_Browser item in cefInstances)
+            //{
+            //    item.Close();
+            //    RemoveInstanece(item);
+            //}
+            while (cefInstances.Count > 0)
             {
-                item.Close();
-                RemoveInstanece(item);
+                CEF_Browser toBeClosed = (CEF_Browser)cefInstances[0];
+                toBeClosed.Close();
+                RemoveInstanece(toBeClosed);
             }
         }
         public static CEF_Browser getInstance()
@@ -57,8 +78,8 @@ namespace Game
         }
         public static class settings
         {
-            public static string defaultLink = "www.baidu.com";
-
+            public static string defaultLink = "https://www.bing.com/search?q=bing";
+            public static BrowserWidget KWidget;
         }
     }
     public class PerformanceStatistic
@@ -137,41 +158,15 @@ namespace Game
     }
 
 
-    public class DLL
-    {
-        //public class Websocket4Net
-        //{
-        //    public static Assembly dll;
-        //    public static Type WebSocket;
-        //    public static Type MessageReceivedEventArgs;
-        //    public static Type WebSocketVersion;
-        //    public static bool IsLoaded = false;
-        //}
-        //public static Assembly Websocket4Net;
-        public class L_WebsocketSharp
-        {
-            public static Assembly assembly;
-        }
-    }
+    //public class DLL
+    //{
+    //    public class L_WebsocketSharp
+    //    {
+    //        public static Assembly assembly;
+    //    }
+    //}
     public class xml
     {
-        //public xml()
-        //{
-        //XmlDocument xdoc = new XmlDocument();
-        //XmlElement e1 = xdoc.CreateElement("e1");
-        //e1.InnerText = "666";
-        //xdoc.AppendChild(e1);
-        //xdoc.RemoveChild(e1);
-        ////xdoc.pa
-        //var str = xdoc.ToString();
-        //Console.WriteLine(1);
-        //Console.WriteLine(xdoc.InnerText);
-        //// 输出结果
-        //Console.WriteLine("XML to Text:\n" + xmlToString(xdoc));
-        //Console.WriteLine("XML to Text:\n" + xmlToString(websocket.getStandardFormat("type", "data")));
-        //Console.WriteLine("XML to Text:\n" + xmlToString(websocket.getStandardFormat("type", "data")));
-        //Console.WriteLine("XML to Text:\n" + websocket.getStandardFormat("type", "data").GetElementsByTagName("SCWS")[0].InnerText);
-        //}
         public static string xmlToString(XmlDocument doc)
         {
             // 将 XML 转换为文本格式
@@ -186,9 +181,9 @@ namespace Game
     }
     public class EGlobal
     {
-        public static string Version = "0.1.3";
-        public static string Date = "2024-8-17";
-        public static string UpdateInfo = @"None";
+        public static string Version = "0.1.4";
+        public static string Date = "2024-8-18";
+        public static string UpdateInfo = @"浏览器支持多标签多任务运行\n新增音频支持";
         //public static void AssemblyInit()
         //{
         //    var assemblies = AppDomain.CurrentDomain.GetAssemblies();

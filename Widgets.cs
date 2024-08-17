@@ -17,6 +17,11 @@ namespace Game
 
     public class BrowserWidget : CanvasWidget
     {
+        public void RefreshPosition()
+        {
+            playerPosition = m_componentPlayer.ComponentBody.Position;
+            ScreenPositionTextbox.Text = $"{MathUtils.Floor(playerPosition.X)}, {MathUtils.Floor(playerPosition.Y)}, {MathUtils.Floor(playerPosition.Z)}";
+        }
         //public GridPanelWidget m_inventoryGrid;
 
         //public ButtonWidget m_chooseButton;
@@ -29,32 +34,8 @@ namespace Game
         public ButtonWidget CreateBrowserButton;
         public ButtonWidget ClosePageButton;
         public ButtonWidget CloseBrowserButton;
-        //public ButtonWidget m_buyButton;
-
-        //public ButtonWidget m_soldButton;
-
-        //public ButtonWidget m_upgradeshopButton;
-
-        //public InventorySlotWidget m_soldSlot;
-
-        //public BlockIconWidget m_itemvalueicon;
-
-        //public LabelWidget m_chooseitemLabel;
-
-        //public LabelWidget m_chooseitemcountLabel;
-
-        //public LabelWidget m_moneyLabel;
-
-        //public LabelWidget m_returnmoneyLabel;
-
-        //public LabelWidget m_shoplevelLabel;
 
         public ComponentPlayer m_componentPlayer;
-
-        //public ComponentShop m_componentShop;
-
-        //public SubsystemFinancial m_subsystemFinancial;
-
         public IInventory m_inventory;
 
         public int ResolvingPower_Height = 600;
@@ -66,7 +47,6 @@ namespace Game
         public BrowserWidget(/*ComponentShop componentShop,*/ ComponentPlayer componentPlayer/*, SubsystemFinancial subsystemFinancial*/)
         {
             m_componentPlayer = componentPlayer;
-            playerPosition = componentPlayer.ComponentBody.Position;
             //m_componentShop = componentShop;
             //m_subsystemFinancial = subsystemFinancial;
             m_inventory = componentPlayer.ComponentMiner.Inventory;
@@ -93,7 +73,7 @@ namespace Game
             //m_upgradeshopButton = Children.Find<ButtonWidget>("UpgradeShopButton");
             //m_shoplevelLabel = Children.Find<LabelWidget>("ShopLevelLabel");
             //m_soldSlot.AssignInventorySlot(componentShop, componentShop.SoldSlotIndex);
-            ScreenPositionTextbox.Text = $"{MathUtils.Floor(playerPosition.X)}, {MathUtils.Floor(playerPosition.Y)}, {MathUtils.Floor(playerPosition.Z)}";
+            RefreshPosition();
             SiteAddrDialog.Text = WebTV.settings.defaultLink;
         }
 
@@ -208,7 +188,6 @@ namespace Game
             //    ItemValue = value;
             //}));
             //}
-            CEF_Browser CefIns = WebTV.getInstance();
 
 
 
@@ -224,6 +203,8 @@ namespace Game
             }
             else if (CreatePreviewButton.IsClicked)
             {
+                CEF_Browser CefIns = WebTV.getInstance();
+
                 //CEF_Browser CefIns;
                 try
                 {
@@ -249,7 +230,9 @@ namespace Game
                 try
                 {
                     float size = 10;//82;
-                    float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
+                    //float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
+                    Vector3 eyePosition = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
+
                     Pattern pattern = new Pattern
                     {
                         Point = new Point3(CefIns.posVec),
@@ -257,14 +240,16 @@ namespace Game
                         Size = size,// / 20.418f,
                         TexName = "ICON",
                         Position = new Vector3(CefIns.posVec.X, CefIns.posVec.Y, CefIns.posVec.Z),
-                        Up = new Vector3(0f, UpProportion, 0f),
+                        //Up = new Vector3(0f, UpProportion, 0f),
+                        Up = eyePosition,
                         Right = new Vector3(1f, 0f, 0f)
                     };
                     MemoryStream pngStream = new();
                     int cef_width = CefIns.width;
                     int cef_height = CefIns.height;
                     CefIns.IngameWidth = size;
-                    CefIns.IngameHeight = size * UpProportion;
+                    CefIns.IngameHeight = size * eyePosition.Y;
+                    //CefIns.IngameHeight = size * UpProportion;
                     var bmPNG = new System.Drawing.Bitmap(cef_width, cef_height);
 
                     //绘制文字
@@ -296,6 +281,7 @@ namespace Game
             }
             else if (CreateBrowserButton.IsClicked)
             {
+                CEF_Browser CefIns = WebTV.GetNoneBrowserCef();
                 if (CefIns == null || !CefIns.initPreview)
                 {
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("错误: 浏览器需要在预览屏幕上进行创建", Color.Red, false, true);
@@ -321,6 +307,8 @@ namespace Game
             }
             else if (ClosePageButton.IsClicked)
             {
+                CEF_Browser CefIns = WebTV.GetLastElement();
+
                 if (CefIns != null && CefIns.Browser != null)
                 {
                     CefIns.Browser.Load("about:blank");
@@ -331,6 +319,8 @@ namespace Game
             }
             else if (CloseBrowserButton.IsClicked)
             {
+                CEF_Browser CefIns = WebTV.GetLastElement();
+
                 if (CefIns != null && CefIns.Browser != null)
                 {
                     CefIns.Close();

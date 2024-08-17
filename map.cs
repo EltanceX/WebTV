@@ -108,167 +108,172 @@ namespace Game
         {
             this.camera = camera;
 
-            CEF_Browser CefIns = WebTV.getInstance();
-            if (CefIns == null) return;
+            //CEF_Browser CefIns = ;
+            if (WebTV.getInstance() == null) return;
 
 
-            if (CefIns.isFocused && CefIns.Browser != null && CefIns.updated && CefIns.isTextureDrawingCompleted)//&& util.getTime() - browserData.lastUpdatedTime >= 10)
+            //foreach (CEF_Browser CefIns in WebTV.cefInstances)
+            for (int i = 0; i < WebTV.cefInstances.Count; i++)
             {
-                //Task.Run(delegate
-                //{
-                //    CEF_Browser.updateTexture();
-                //});
-                CefIns.updateTexture();
+                CEF_Browser CefIns = (CEF_Browser)WebTV.cefInstances[i];
 
-                CefIns.updated = false;
-            }
-
-            if (CefIns.pattern != null)
-            {
-
-                //ScreenLog.Info(Mouse.MouseWheelMovement);
-                float cosPosV_ScreenNormalV = 2;
-                float cosScreenNormalV_EyeV = 2;
-                Vector3 forwardVector = EGlobal.Player.ComponentCreatureModel.EyeRotation.GetForwardVector();
-                //if (browserData.pos != null)
-                //{
-                //Vector3 v5 = new Vector3(browserData.pos.X, browserData.pos.Y, browserData.pos.Z);
-                FlatBatch3D flatBatch3D = m_primitivesRenderer3D2.FlatBatch();
-                BoundingBox boundingBox = new BoundingBox(CefIns.posVec, CefIns.posVec + new Vector3(1f));
-                flatBatch3D.QueueBoundingBox(boundingBox, Color.Orange);
-
-
-                Vector3 unitForwardVec = Vector3.Normalize(forwardVector);
-                Vector3 eyePosition = EGlobal.Player.ComponentCreatureModel.EyePosition;
-                //视角到屏幕点的向量
-                Vector3 posV = CefIns.posVec - eyePosition;
-                cosPosV_ScreenNormalV = Vector3.Dot(posV, CefIns.ScreenNormalVector) / (posV.Length() * CefIns.ScreenNormalVector.Length());
-                //ScreenLog.Info(cosPosV_ScreenNormalV);
-                cosScreenNormalV_EyeV = Vector3.Dot(forwardVector, CefIns.ScreenNormalVector) / (forwardVector.Length() * CefIns.ScreenNormalVector.Length());
-                if (cosScreenNormalV_EyeV > 0.2 && cosPosV_ScreenNormalV > 0)
+                if (CefIns.isFocused && CefIns.Browser != null && CefIns.updated && CefIns.isTextureDrawingCompleted)//&& util.getTime() - browserData.lastUpdatedTime >= 10)
                 {
-                    //ScreenLog.Info($"A {cosScreenNormalV_EyeV} {cosPosV_ScreenNormalV}");
-                    //眼睛垂直于屏幕的距离
-                    float eyeToScreen = posV.Length() * cosPosV_ScreenNormalV;
-                    if (eyeToScreen < 50)
+                    //Task.Run(delegate
+                    //{
+                    //    CEF_Browser.updateTexture();
+                    //});
+                    CefIns.updateTexture();
+
+                    CefIns.updated = false;
+                }
+
+                if (CefIns.pattern != null)
+                {
+
+                    //ScreenLog.Info(Mouse.MouseWheelMovement);
+                    float cosPosV_ScreenNormalV = 2;
+                    float cosScreenNormalV_EyeV = 2;
+                    Vector3 forwardVector = EGlobal.Player.ComponentCreatureModel.EyeRotation.GetForwardVector();
+                    //if (browserData.pos != null)
+                    //{
+                    //Vector3 v5 = new Vector3(browserData.pos.X, browserData.pos.Y, browserData.pos.Z);
+                    FlatBatch3D flatBatch3D = m_primitivesRenderer3D2.FlatBatch();
+                    BoundingBox boundingBox = new BoundingBox(CefIns.posVec, CefIns.posVec + new Vector3(1f));
+                    flatBatch3D.QueueBoundingBox(boundingBox, Color.Orange);
+
+
+                    Vector3 unitForwardVec = Vector3.Normalize(forwardVector);
+                    Vector3 eyePosition = EGlobal.Player.ComponentCreatureModel.EyePosition;
+                    //视角到屏幕点的向量
+                    Vector3 posV = CefIns.posVec - eyePosition;
+                    cosPosV_ScreenNormalV = Vector3.Dot(posV, CefIns.ScreenNormalVector) / (posV.Length() * CefIns.ScreenNormalVector.Length());
+                    //ScreenLog.Info(cosPosV_ScreenNormalV);
+                    cosScreenNormalV_EyeV = Vector3.Dot(forwardVector, CefIns.ScreenNormalVector) / (forwardVector.Length() * CefIns.ScreenNormalVector.Length());
+                    if (cosScreenNormalV_EyeV > 0.2 && cosPosV_ScreenNormalV > 0)
                     {
-                        //眼睛沿视线射向屏幕的距离
-                        float d_eyeV = eyeToScreen / cosScreenNormalV_EyeV;
-                        Vector3 forwardVecLengthen = forwardVector * d_eyeV;
-                        Vector3 targetPointVec = eyePosition + forwardVecLengthen;//屏幕焦点坐标
-                        BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.16f, targetPointVec.Y - 0.16f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.16f, targetPointVec.Y + 0.16f, targetPointVec.Z + 0.1f);
-                        flatBatch3D.QueueBoundingBox(boundingBox2, Color.Blue);
-                        flatBatch3D.QueueLine(eyePosition, targetPointVec, Color.Red);
-
-                        //if (Mouse.IsMouseButtonDown(MouseButton.Left))
-                        //{
-                        Vector3 relativeVec = targetPointVec - CefIns.posVec;
-                        //ScreenLog.Info($"{relativeVec.X} {relativeVec.Y} {relativeVec.Z}");
-                        if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
+                        //ScreenLog.Info($"A {cosScreenNormalV_EyeV} {cosPosV_ScreenNormalV}");
+                        //眼睛垂直于屏幕的距离
+                        float eyeToScreen = posV.Length() * cosPosV_ScreenNormalV;
+                        if (eyeToScreen < 50)
                         {
-                            float x = relativeVec.X / CefIns.IngameWidth * CefIns.width;
-                            float y = relativeVec.Y / CefIns.IngameHeight * CefIns.height;
-                            int upper_left_X = (int)(CefIns.width - x);
-                            int upper_left_Y = (int)(CefIns.height - y);
-                            //ScreenLog.Info($"MouseMove Event: {upper_left_X} {upper_left_Y}");
-                            var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
-                            var browserHost = CefIns.Browser.GetBrowserHost();
-                            browserHost.SendMouseMoveEvent(mouseEvent, false);
-                            if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
-                            {
-                                ScreenLog.Info("Set Left Click State: True");
-                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
-                                //browserHost.
-                                CefIns.hasMouseDown = true;
-                            }
-                            else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
-                            {
-                                ScreenLog.Info("Set Left Click State: False");
-                                CefIns.hasMouseDown = false;
-                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
-                            }
+                            //眼睛沿视线射向屏幕的距离
+                            float d_eyeV = eyeToScreen / cosScreenNormalV_EyeV;
+                            Vector3 forwardVecLengthen = forwardVector * d_eyeV;
+                            Vector3 targetPointVec = eyePosition + forwardVecLengthen;//屏幕焦点坐标
+                            BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.16f, targetPointVec.Y - 0.16f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.16f, targetPointVec.Y + 0.16f, targetPointVec.Z + 0.1f);
+                            flatBatch3D.QueueBoundingBox(boundingBox2, Color.Blue);
+                            flatBatch3D.QueueLine(eyePosition, targetPointVec, Color.Red);
 
-                            if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
+                            //if (Mouse.IsMouseButtonDown(MouseButton.Left))
+                            //{
+                            Vector3 relativeVec = targetPointVec - CefIns.posVec;
+                            //ScreenLog.Info($"{relativeVec.X} {relativeVec.Y} {relativeVec.Z}");
+                            if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
                             {
-                                ScreenLog.Info("Set Right Click State: True");
-                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
-                                //browserHost.
-                                CefIns.hasRightMouseDown = true;
-                            }
-                            else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
-                            {
-                                ScreenLog.Info("Set Right Click State: False");
-                                CefIns.hasRightMouseDown = false;
-                                browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
-                            }
+                                float x = relativeVec.X / CefIns.IngameWidth * CefIns.width;
+                                float y = relativeVec.Y / CefIns.IngameHeight * CefIns.height;
+                                int upper_left_X = (int)(CefIns.width - x);
+                                int upper_left_Y = (int)(CefIns.height - y);
+                                //ScreenLog.Info($"MouseMove Event: {upper_left_X} {upper_left_Y}");
+                                var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
+                                var browserHost = CefIns.Browser.GetBrowserHost();
+                                browserHost.SendMouseMoveEvent(mouseEvent, false);
+                                if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
+                                {
+                                    ScreenLog.Info("Set Left Click State: True");
+                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
+                                    //browserHost.
+                                    CefIns.hasMouseDown = true;
+                                }
+                                else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
+                                {
+                                    ScreenLog.Info("Set Left Click State: False");
+                                    CefIns.hasMouseDown = false;
+                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
+                                }
 
-                            if (Mouse.MouseWheelMovement > 0)
-                            {
-                                CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
+                                if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
+                                {
+                                    ScreenLog.Info("Set Right Click State: True");
+                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
+                                    //browserHost.
+                                    CefIns.hasRightMouseDown = true;
+                                }
+                                else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
+                                {
+                                    ScreenLog.Info("Set Right Click State: False");
+                                    CefIns.hasRightMouseDown = false;
+                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
+                                }
+
+                                if (Mouse.MouseWheelMovement > 0)
+                                {
+                                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
+                                }
+                                else if (Mouse.MouseWheelMovement < 0)
+                                {
+                                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
+                                }
+
                             }
-                            else if (Mouse.MouseWheelMovement < 0)
-                            {
-                                CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
-                            }
+                            //}
 
                         }
-                        //}
+                    }
+                    m_primitivesRenderer3D2.Flush(camera.ViewProjectionMatrix);
+                    //}
+                    //else
+                    //{
+                    //    m_primitivesRenderer3D2.Clear();
+                    //}
+
+
+
+
+                    var pattern = CefIns.pattern;
+                    if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
+                    {
+                        CefIns.isFocused = false;
+                        return;
+                    }
+                    CefIns.isFocused = true;
+
+                    Vector3 vector = pattern.Position - camera.ViewPosition;
+                    if (vector.Length() < m_subsystemSky.ViewFogRange.Y)
+                    {
+                        //Vector3 vector2 = (0f - (0.01f + 0.02f * num)) / num2 * vector;
+                        //Vector3 vector3 = pattern.Position - pattern.Size * (pattern.Right + pattern.Up);// + vector2; +1, +0.6
+                        //Vector3 vector4 = pattern.Position + pattern.Size * (pattern.Right - pattern.Up);// + vector2; -1, +0.6
+                        //var vector4 = pattern.Position;
+                        //Vector3 vector5 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);// + vector2; -1, -0.6
+                        //Vector3 vector6 = pattern.Position - pattern.Size * (pattern.Right - pattern.Up);// + vector2; +1, -0.6
+                        //var vector6 = pattern.Position;
+                        //RenderTarget2D r2d = Display.RenderTarget;
+
+                        var vector3 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);
+                        var vector4 = pattern.Position + pattern.Size * pattern.Up;
+                        var vector5 = pattern.Position; //+ new Vector3(0, 0, 0);
+                        var vector6 = pattern.Position + pattern.Size * pattern.Right;
+
+                        var temp = m_primitivesRenderer3D.TexturedBatch(pattern.Texture, useAlphaTest: true, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
+                        //int count = temp.TriangleVertices.Count;
+                        temp.QueueQuad(vector3, vector4, vector5, vector6, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), pattern.Color);
+
+                        m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
+
+                        //Engine.Graphics.TexturedBatch3D.
+                        //m_primitivesRenderer3D.
+                        //temp.Clear();
+                        //temp.Clear();
+                        //m_primitivesRenderer3D.Clear();
 
                     }
-                }
-                m_primitivesRenderer3D2.Flush(camera.ViewProjectionMatrix);
-                //}
-                //else
-                //{
-                //    m_primitivesRenderer3D2.Clear();
-                //}
+                    //m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
 
 
-
-
-                var pattern = CefIns.pattern;
-                if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
-                {
-                    CefIns.isFocused = false;
-                    return;
-                }
-                CefIns.isFocused = true;
-
-                Vector3 vector = pattern.Position - camera.ViewPosition;
-                if (vector.Length() < m_subsystemSky.ViewFogRange.Y)
-                {
-                    //Vector3 vector2 = (0f - (0.01f + 0.02f * num)) / num2 * vector;
-                    //Vector3 vector3 = pattern.Position - pattern.Size * (pattern.Right + pattern.Up);// + vector2; +1, +0.6
-                    //Vector3 vector4 = pattern.Position + pattern.Size * (pattern.Right - pattern.Up);// + vector2; -1, +0.6
-                    //var vector4 = pattern.Position;
-                    //Vector3 vector5 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);// + vector2; -1, -0.6
-                    //Vector3 vector6 = pattern.Position - pattern.Size * (pattern.Right - pattern.Up);// + vector2; +1, -0.6
-                    //var vector6 = pattern.Position;
-                    //RenderTarget2D r2d = Display.RenderTarget;
-
-                    var vector3 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);
-                    var vector4 = pattern.Position + pattern.Size * pattern.Up;
-                    var vector5 = pattern.Position; //+ new Vector3(0, 0, 0);
-                    var vector6 = pattern.Position + pattern.Size * pattern.Right;
-
-                    var temp = m_primitivesRenderer3D.TexturedBatch(pattern.Texture, useAlphaTest: true, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
-                    //int count = temp.TriangleVertices.Count;
-                    temp.QueueQuad(vector3, vector4, vector5, vector6, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), pattern.Color);
-
-                    m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
-
-                    //Engine.Graphics.TexturedBatch3D.
-                    //m_primitivesRenderer3D.
-                    //temp.Clear();
-                    //temp.Clear();
-                    //m_primitivesRenderer3D.Clear();
 
                 }
-                //m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
-
-
-
-
 
                 //return;
                 //float number = 2f;
