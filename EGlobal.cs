@@ -281,23 +281,27 @@ namespace Game
         //}
         public static Vector3[] GetUVByPlaneNormal(Vector3 planeNormal)
         {
-            Vector3 u;
-            if (MathUtils.Abs(planeNormal.X) < 1e-10 && MathUtils.Abs(planeNormal.Y) < 1e-10)
-            {
-                u = new Vector3(1, 0, 0);  // If b is close to (0, 0, 1), use x-axis
-            }
-            else
-            {
-                u = new Vector3(0, 0, 1);  // Otherwise, use z-axis
-            }
+            Vector3 u = new Vector3(1, 0, 0);
+            //if (MathUtils.Abs(planeNormal.X) < 1e-10 && MathUtils.Abs(planeNormal.Y) < 1e-10)
+            //{
+            //    u = new Vector3(1, 0, 0);  // If b is close to (0, 0, 1), use x-axis
+            //}
+            //else
+            //{
+            //    u = new Vector3(0, 0, 1);  // Otherwise, use z-axis
+            //}
+            if (planeNormal.X >= 0 && planeNormal.Z <= 0 || planeNormal.X <= 0 && planeNormal.Z <= 0) u = new Vector3(1, 0, 0); //+- --
+            else if (planeNormal.X >= 0 && planeNormal.Z >= 0 || planeNormal.X <= 0 && planeNormal.Z >= 0) u = new Vector3(-1, 0, 0); //++ -+
+            //u = new Vector3(-1, 0, 0);  // Otherwise, use z-axis
+
             u = Vector3.Cross(u, planeNormal);
-            
+
             u = Vector3.Normalize(u);
 
 
             Vector3 v = Vector3.Cross(u, planeNormal);
             v = Vector3.Normalize(v);
-
+            //ScreenLog.Info($"U: {u.X} {u.Y} {u.Z} || V: {v.X} {v.Y} {v.Z}");
             return new Vector3[] { u, v };
         }
     }

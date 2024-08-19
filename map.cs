@@ -162,7 +162,7 @@ namespace Game
                             float d_eyeV = eyeToScreen / cosScreenNormalV_EyeV;
                             Vector3 forwardVecLengthen = forwardVector * d_eyeV;
                             Vector3 targetPointVec = eyePosition + forwardVecLengthen;//屏幕焦点坐标
-                            BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.16f, targetPointVec.Y - 0.16f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.16f, targetPointVec.Y + 0.16f, targetPointVec.Z + 0.1f);
+                            BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.1f, targetPointVec.Y - 0.1f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.1f, targetPointVec.Y + 0.1f, targetPointVec.Z + 0.1f);
                             flatBatch3D.QueueBoundingBox(boundingBox2, Color.Blue);
                             flatBatch3D.QueueLine(eyePosition, targetPointVec, Color.Red);
 
@@ -179,7 +179,7 @@ namespace Game
                             float VLength = relativeLength * cos_Relative_V; //+ -
                             //Vector3 ProjectionU = CefIns.U * (relativeLength * cos_Relative_U);
                             //Vector3 ProjectionV = CefIns.V * (relativeLength * cos_Relative_V);
-                            ScreenLog.Info($"{cos_Relative_U} {cos_Relative_V} / {ULength}({CefIns.IngameHeight}) {VLength}({CefIns.IngameWidth}) | {relativeLength}({CefIns.DiagonalLength})");
+                            //ScreenLog.Info($"{cos_Relative_U} {cos_Relative_V} / {ULength}({CefIns.IngameHeight}) {VLength}({CefIns.IngameWidth}) | {relativeLength}({CefIns.DiagonalLength})");
                             //if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
                             if (CefIns.Browser != null && cos_Relative_U > 0 && cos_Relative_V > 0 && relativeLength <= CefIns.DiagonalLength && ULength < CefIns.IngameHeight && VLength < CefIns.IngameWidth)
                             {
@@ -188,7 +188,7 @@ namespace Game
                                 float x = VLength / CefIns.IngameHeight * CefIns.height;
                                 int upper_left_X = (int)(CefIns.width - x);
                                 int upper_left_Y = (int)(CefIns.height - y);
-                                ScreenLog.Info($"MouseMove Vector: {upper_left_X} {upper_left_Y}");
+                                //ScreenLog.Info($"MouseMove Vector: {upper_left_X} {upper_left_Y}");
                                 var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
                                 var browserHost = CefIns.Browser.GetBrowserHost();
                                 browserHost.SendMouseMoveEvent(mouseEvent, false);

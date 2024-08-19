@@ -139,7 +139,7 @@ namespace Game
                 {
                     pattern.Texture.Dispose();
                     pattern = null;
-                    initPreview = false;
+                    initPreview = false; 
                     WebTV.RemoveInstanece(this);
                     return true;
                 }
