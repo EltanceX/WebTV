@@ -124,13 +124,25 @@ namespace Game
         public int height = 600;
         public int width = 1000;
 
+        public Vector3 U;//Normal vector
+        public Vector3 V;//...
+        public float DiagonalLength;
+
 
 
         public bool Close()
         {
+            if (Browser == null && pattern == null) return false;
             try
             {
-                if (Browser == null || pattern == null) return false;
+                if (Browser == null && pattern != null)
+                {
+                    pattern.Texture.Dispose();
+                    pattern = null;
+                    initPreview = false;
+                    WebTV.RemoveInstanece(this);
+                    return true;
+                }
                 Browser.GetBrowser().CloseBrowser(true);
                 Browser.Dispose();
                 Browser = null;
@@ -138,13 +150,14 @@ namespace Game
                 pattern = null;
                 initPreview = false;
                 WebTV.RemoveInstanece(this);
+                return true;
                 //Cef.Shutdown();
             }
             catch (Exception e)
             {
                 ScreenLog.Info(e);
+                return false;
             }
-            return true;
         }
         public bool Create(string url = null)
         {

@@ -203,9 +203,9 @@ namespace Game
             }
             else if (CreatePreviewButton.IsClicked)
             {
-                CEF_Browser CefIns = WebTV.getInstance();
+                //CEF_Browser CefIns = WebTV.getInstance();
 
-                //CEF_Browser CefIns;
+                CEF_Browser CefIns;
                 try
                 {
                     CefIns = WebTV.CreateInstanece();
@@ -230,8 +230,15 @@ namespace Game
                 try
                 {
                     float size = 10;//82;
-                    //float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
+                    float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
                     Vector3 eyePosition = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
+                    CefIns.ScreenNormalVector = eyePosition;
+                    Vector3[] uv = util.GetUVByPlaneNormal(eyePosition);
+                    Vector3 u = uv[0];
+                    Vector3 v = uv[1];
+                    CefIns.U = u;
+                    CefIns.V = v;
+
 
                     Pattern pattern = new Pattern
                     {
@@ -241,14 +248,19 @@ namespace Game
                         TexName = "ICON",
                         Position = new Vector3(CefIns.posVec.X, CefIns.posVec.Y, CefIns.posVec.Z),
                         //Up = new Vector3(0f, UpProportion, 0f),
-                        Up = eyePosition,
-                        Right = new Vector3(1f, 0f, 0f)
+                        //Up = eyePosition,
+                        Up = u * UpProportion,
+                        //Right = new Vector3(1f, 0f, 0f)
+                        Right = v
                     };
                     MemoryStream pngStream = new();
                     int cef_width = CefIns.width;
                     int cef_height = CefIns.height;
                     CefIns.IngameWidth = size;
-                    CefIns.IngameHeight = size * eyePosition.Y;
+                    CefIns.IngameHeight = size * UpProportion;
+
+                    CefIns.DiagonalLength = MathUtils.Sqrt(CefIns.IngameWidth * CefIns.IngameWidth + CefIns.IngameHeight * CefIns.IngameHeight);
+
                     //CefIns.IngameHeight = size * UpProportion;
                     var bmPNG = new System.Drawing.Bitmap(cef_width, cef_height);
 
@@ -321,7 +333,7 @@ namespace Game
             {
                 CEF_Browser CefIns = WebTV.GetLastElement();
 
-                if (CefIns != null && CefIns.Browser != null)
+                if (CefIns != null)// && CefIns.Browser != null)
                 {
                     CefIns.Close();
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("浏览器已成功关闭", Color.Green, false, true);

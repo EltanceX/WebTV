@@ -143,7 +143,8 @@ namespace Game
                     flatBatch3D.QueueBoundingBox(boundingBox, Color.Orange);
 
 
-                    Vector3 unitForwardVec = Vector3.Normalize(forwardVector);
+                    //Vector3 unitForwardVec = Vector3.Normalize(forwardVector);
+                    Vector3 unitForwardVec = forwardVector;
                     Vector3 eyePosition = EGlobal.Player.ComponentCreatureModel.EyePosition;
                     //视角到屏幕点的向量
                     Vector3 posV = CefIns.posVec - eyePosition;
@@ -169,13 +170,25 @@ namespace Game
                             //{
                             Vector3 relativeVec = targetPointVec - CefIns.posVec;
                             //ScreenLog.Info($"{relativeVec.X} {relativeVec.Y} {relativeVec.Z}");
-                            if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
+
+                            float relativeLength = relativeVec.Length();
+                            float ab = relativeLength * CefIns.U.Length();
+                            float cos_Relative_U = Vector3.Dot(relativeVec, CefIns.U) / ab;
+                            float cos_Relative_V = Vector3.Dot(relativeVec, CefIns.V) / ab;
+                            float ULength = relativeLength * cos_Relative_U; //+ -
+                            float VLength = relativeLength * cos_Relative_V; //+ -
+                            //Vector3 ProjectionU = CefIns.U * (relativeLength * cos_Relative_U);
+                            //Vector3 ProjectionV = CefIns.V * (relativeLength * cos_Relative_V);
+                            ScreenLog.Info($"{cos_Relative_U} {cos_Relative_V} / {ULength}({CefIns.IngameHeight}) {VLength}({CefIns.IngameWidth}) | {relativeLength}({CefIns.DiagonalLength})");
+                            //if (CefIns.Browser != null && relativeVec.X > 0 && relativeVec.Y > 0 && relativeVec.X < CefIns.IngameWidth && relativeVec.Y < CefIns.IngameHeight)
+                            if (CefIns.Browser != null && cos_Relative_U > 0 && cos_Relative_V > 0 && relativeLength <= CefIns.DiagonalLength && ULength < CefIns.IngameHeight && VLength < CefIns.IngameWidth)
                             {
-                                float x = relativeVec.X / CefIns.IngameWidth * CefIns.width;
-                                float y = relativeVec.Y / CefIns.IngameHeight * CefIns.height;
+
+                                float y = ULength / CefIns.IngameWidth * CefIns.width;
+                                float x = VLength / CefIns.IngameHeight * CefIns.height;
                                 int upper_left_X = (int)(CefIns.width - x);
                                 int upper_left_Y = (int)(CefIns.height - y);
-                                //ScreenLog.Info($"MouseMove Event: {upper_left_X} {upper_left_Y}");
+                                ScreenLog.Info($"MouseMove Vector: {upper_left_X} {upper_left_Y}");
                                 var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
                                 var browserHost = CefIns.Browser.GetBrowserHost();
                                 browserHost.SendMouseMoveEvent(mouseEvent, false);
@@ -235,7 +248,8 @@ namespace Game
                     if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
                     {
                         CefIns.isFocused = false;
-                        return;
+                        continue;
+                        //return;
                     }
                     CefIns.isFocused = true;
 

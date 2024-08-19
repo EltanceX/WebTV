@@ -12,6 +12,8 @@ using CefSharp.OffScreen;
 using System.Drawing;
 using GameEntitySystem;
 using System.Collections;
+//using OpenTK;
+using System.Numerics;
 
 namespace Game
 {
@@ -268,6 +270,35 @@ namespace Game
             DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             return (dateTime - startTime).TotalMilliseconds;
 
+        }
+        //public static Vector3 crossProduct(Vector3 a, Vector3 b)
+        //{
+        //    return new Vector3(
+        //        a.Y * b.Z - a.Z * b.Y,
+        //        a.Z * b.X - a.X * b.Z,
+        //        a.X * b.Y - a.Y * b.X
+        //    );
+        //}
+        public static Vector3[] GetUVByPlaneNormal(Vector3 planeNormal)
+        {
+            Vector3 u;
+            if (MathUtils.Abs(planeNormal.X) < 1e-10 && MathUtils.Abs(planeNormal.Y) < 1e-10)
+            {
+                u = new Vector3(1, 0, 0);  // If b is close to (0, 0, 1), use x-axis
+            }
+            else
+            {
+                u = new Vector3(0, 0, 1);  // Otherwise, use z-axis
+            }
+            u = Vector3.Cross(u, planeNormal);
+            
+            u = Vector3.Normalize(u);
+
+
+            Vector3 v = Vector3.Cross(u, planeNormal);
+            v = Vector3.Normalize(v);
+
+            return new Vector3[] { u, v };
         }
     }
 }
