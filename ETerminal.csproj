@@ -92,7 +92,7 @@
     <Compile Include="Hammer.cs" />
     <Compile Include="LogSink.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="map.cs" />
+    <Compile Include="Rendering.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -35,13 +35,13 @@ namespace Game
         }
         public Camera camera;
 
-        private int mapblockcount = 48;
+        //private int mapblockcount = 48;
 
         private float mapSize = 0.25f;
 
         private BitmapButtonWidget mapButton;
 
-        private Point2 Point;
+        //private Point2 Point;
 
         //CB 
         public Texture2D Lightstick;
@@ -56,11 +56,11 @@ namespace Game
 
         private Subtexture m_mapButton_Pressed;
 
-        private float lastf;
+        //private float lastf;
 
-        private float currentf;
+        //private float currentf;
 
-        public Color cursorColor;
+        //public Color cursorColor;
 
         private Vector2 cursorCoordLeftTop;
 
@@ -72,9 +72,9 @@ namespace Game
 
         private readonly List<Vector2> deathLocations = new List<Vector2>();
 
-        private float alpha = 1f;
+        //private float alpha = 1f;
 
-        private readonly Dictionary<Point2, int> MapContents = new Dictionary<Point2, int>();
+        //private readonly Dictionary<Point2, int> MapContents = new Dictionary<Point2, int>();
 
         public SubsystemTerrain m_subsystemTerrain;
 
@@ -391,7 +391,7 @@ namespace Game
             return;
             Vector2 viewportSize = camera.ViewportSize;
             Vector2 vector = new Vector2(viewportSize.X, viewportSize.Y * mapSize);
-            float num = vector.Y / (float)mapblockcount;
+            //float num = vector.Y / (float)mapblockcount;
             Vector2 vector2 = new Vector2(viewportSize.X - 1.5f * vector.Y, 0f);
             FlatBatch2D flatBatch2D = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
             int count = flatBatch2D.TriangleVertices.Count;
