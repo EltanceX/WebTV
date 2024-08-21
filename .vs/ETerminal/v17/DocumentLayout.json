@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|c:\\users\\eltancex\\source\\repos\\eterminal\\eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\widgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:widgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\et_f3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,26 +42,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "EGlobal.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
               "RelativeDocumentMoniker": "EGlobal.cs",
               "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
               "RelativeToolTip": "EGlobal.cs",
-              "ViewState": "AQIAABsBAAAAAAAAAAAjwC8BAAAqAAAA",
+              "ViewState": "AQIAABoBAAAAAAAAAAAMwCoBAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-19T04:58:49.847Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "map.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\map.cs",
               "RelativeDocumentMoniker": "map.cs",
               "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\map.cs",
               "RelativeToolTip": "map.cs",
-              "ViewState": "AQIAALsAAAAAAAAAAAAUwLIAAABSAAAA",
+              "ViewState": "AQIAAP0AAAAAAAAAAAAUwA8BAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-17T01:42:45.541Z",
               "EditorCaption": ""
@@ -72,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Widgets.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Widgets.cs",
               "RelativeDocumentMoniker": "Widgets.cs",
@@ -80,8 +80,7 @@
               "RelativeToolTip": "Widgets.cs",
               "ViewState": "AQIAAOoAAAAAAAAAAAAAwPoAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-20T01:30:15.593Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-20T01:30:15.593Z"
             },
             {
               "$type": "Document",
@@ -93,8 +92,7 @@
               "RelativeToolTip": "ET_F3.cs",
               "ViewState": "AQIAACgAAAAAAAAAAAAYwDQAAABhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T16:35:29.896Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-17T16:35:29.896Z"
             },
             {
               "$type": "Document",
