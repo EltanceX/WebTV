@@ -279,6 +279,8 @@ namespace Game
                     image.Save(pngStream, System.Drawing.Imaging.ImageFormat.Png);
                     pngStream.Position = 0;
                     pattern.Texture = Texture2D.Load(pngStream);
+                    pngStream.Position = 0;
+                    pattern.DataTexture = Texture2D.Load(pngStream);
                     pngStream.Dispose();
                     image.Dispose();
 

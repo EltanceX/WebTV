@@ -245,13 +245,13 @@ namespace Game
 
 
                     var pattern = CefIns.pattern;
-                    if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
-                    {
-                        CefIns.isFocused = false;
-                        continue;
-                        //return;
-                    }
-                    CefIns.isFocused = true;
+                    //if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
+                    //{
+                    //    CefIns.isFocused = false;
+                    //    continue;
+                    //    //return;
+                    //}
+                    //CefIns.isFocused = true;
 
                     Vector3 vector = pattern.Position - camera.ViewPosition;
                     if (vector.Length() < m_subsystemSky.ViewFogRange.Y)
@@ -265,14 +265,33 @@ namespace Game
                         //var vector6 = pattern.Position;
                         //RenderTarget2D r2d = Display.RenderTarget;
 
-                        var vector3 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);
-                        var vector4 = pattern.Position + pattern.Size * pattern.Up;
-                        var vector5 = pattern.Position; //+ new Vector3(0, 0, 0);
-                        var vector6 = pattern.Position + pattern.Size * pattern.Right;
+                        var vector3 = pattern.Position + pattern.Size * (pattern.Right + pattern.Up);//右上
+                        var vector4 = pattern.Position + pattern.Size * pattern.Up;//上
+                        var vector5 = pattern.Position; //+ new Vector3(0, 0, 0);//原
+                        var vector6 = pattern.Position + pattern.Size * pattern.Right;//右
+
+                        var temp1 = m_primitivesRenderer3D.TexturedBatch(pattern.DataTexture, useAlphaTest: true, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
+                        //反面数据面板
+                        temp1.QueueQuad(vector4, vector3, vector6, vector5, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), pattern.Color);
+                        m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
+                        //ScreenLog.Info("绘制反面");
+
+
+
+                        if (cosScreenNormalV_EyeV == 2 || cosPosV_ScreenNormalV < 0 || cosScreenNormalV_EyeV < -0.2)
+                        {
+                            CefIns.isFocused = false;
+                            continue;
+                            //return;
+                        }
+                        CefIns.isFocused = true;
 
                         var temp = m_primitivesRenderer3D.TexturedBatch(pattern.Texture, useAlphaTest: true, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
+                        
+                        //浏览器屏幕
                         //int count = temp.TriangleVertices.Count;
                         temp.QueueQuad(vector3, vector4, vector5, vector6, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), pattern.Color);
+                        
 
                         m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
 

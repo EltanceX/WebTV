@@ -105,6 +105,8 @@ namespace Game
 
         public Texture2D Texture;
 
+        public Texture2D DataTexture;
+
         public string TexName;
 
         public Vector3 Right;
@@ -183,9 +185,9 @@ namespace Game
     }
     public class EGlobal
     {
-        public static string Version = "0.1.4";
-        public static string Date = "2024-8-18";
-        public static string UpdateInfo = @"浏览器支持多标签多任务运行\n新增音频支持";
+        public static string Version = "0.1.5";
+        public static string Date = "2024-8-21";
+        public static string UpdateInfo = @"浏览器支持多标签多任务多角度运行\n新增音频支持";
         //public static void AssemblyInit()
         //{
         //    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
