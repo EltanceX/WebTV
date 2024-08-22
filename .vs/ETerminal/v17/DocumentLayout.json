@@ -3,20 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|c:\\users\\eltancex\\source\\repos\\eterminal\\rendering.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:rendering.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\widgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|c:\\users\\eltancex\\source\\repos\\eterminal\\widgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:widgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\et_f3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:et_f3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,6 +13,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\browser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:browser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\rendering.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:rendering.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|C:\\Users\\EltanceX\\source\\repos\\ETerminal\\eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08157ED2-155F-42DA-B8BE-5C09CF658B78}|ETerminal.csproj|solutionrelative:eglobal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,24 +30,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Rendering.cs",
-              "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Rendering.cs",
-              "RelativeDocumentMoniker": "Rendering.cs",
-              "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Rendering.cs",
-              "RelativeToolTip": "Rendering.cs",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAwwFkBAABZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T11:42:35.944Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -79,24 +62,11 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EGlobal.cs",
-              "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
-              "RelativeDocumentMoniker": "EGlobal.cs",
-              "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
-              "RelativeToolTip": "EGlobal.cs",
-              "ViewState": "AQIAAKsAAAAAAAAAAAAxwL4AAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-19T04:58:49.847Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Bookmark",
@@ -104,52 +74,64 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "Rendering.cs",
+              "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Rendering.cs",
+              "RelativeDocumentMoniker": "Rendering.cs",
+              "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Rendering.cs",
+              "RelativeToolTip": "Rendering.cs",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAwwF4AAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-21T11:42:35.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EGlobal.cs",
+              "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
+              "RelativeDocumentMoniker": "EGlobal.cs",
+              "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\EGlobal.cs",
+              "RelativeToolTip": "EGlobal.cs",
+              "ViewState": "AQIAAKsAAAAAAAAAAAAxwL4AAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-19T04:58:49.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "Widgets.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Widgets.cs",
               "RelativeDocumentMoniker": "Widgets.cs",
               "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Widgets.cs",
               "RelativeToolTip": "Widgets.cs",
-              "ViewState": "AQIAAOoAAAAAAAAAAAAAwPYAAAAxAAAA",
+              "ViewState": "AQIAAP8AAAAAAAAAAAAUwA4BAABKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-20T01:30:15.593Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ET_F3.cs",
-              "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\ET_F3.cs",
-              "RelativeDocumentMoniker": "ET_F3.cs",
-              "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\ET_F3.cs",
-              "RelativeToolTip": "ET_F3.cs",
-              "ViewState": "AQIAAD8AAAAAAAAAAAAiwDQAAABhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T16:35:29.896Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Main.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Main.cs",
               "RelativeDocumentMoniker": "Main.cs",
               "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\Main.cs",
               "RelativeToolTip": "Main.cs",
-              "ViewState": "AQIAAA8CAAAAAAAAAAASwBgCAAA1AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEYAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-17T01:42:45.422Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "browser.cs",
               "DocumentMoniker": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\browser.cs",
               "RelativeDocumentMoniker": "browser.cs",
               "ToolTip": "C:\\Users\\EltanceX\\source\\repos\\ETerminal\\browser.cs",
               "RelativeToolTip": "browser.cs",
-              "ViewState": "AQIAAKgBAAAAAAAAAAAUwK4BAAAbAAAA",
+              "ViewState": "AQIAAJUBAAAAAAAAAAAuwK4BAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-17T01:42:46.005Z",
               "EditorCaption": ""

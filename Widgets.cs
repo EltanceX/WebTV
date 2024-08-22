@@ -1,6 +1,9 @@
-﻿using Engine;
+﻿using CefSharp.DevTools.LayerTree;
+using Engine;
 using Engine.Graphics;
 using Engine.Input;
+using GameEntitySystem;
+
 
 
 //using Newtonsoft.Json.Linq;
@@ -8,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -35,6 +39,10 @@ namespace Game
         public ButtonWidget ClosePageButton;
         public ButtonWidget CloseBrowserButton;
 
+        public RectangleWidget m_facing;
+        public ButtonWidget FacingBtn;
+
+
         public ComponentPlayer m_componentPlayer;
         public IInventory m_inventory;
 
@@ -43,6 +51,12 @@ namespace Game
         public int ResolvingPower_Width = 1000;
 
         public Vector3 playerPosition;
+
+        public enum Facing
+        {
+            X, Y, Z, Eye
+        }
+        public Facing FacingState = Facing.Eye;
 
         public BrowserWidget(/*ComponentShop componentShop,*/ ComponentPlayer componentPlayer/*, SubsystemFinancial subsystemFinancial*/)
         {
@@ -75,6 +89,11 @@ namespace Game
             //m_soldSlot.AssignInventorySlot(componentShop, componentShop.SoldSlotIndex);
             RefreshPosition();
             SiteAddrDialog.Text = WebTV.settings.defaultLink;
+
+            m_facing = Children.Find<RectangleWidget>("Facing");
+
+            FacingBtn = Children.Find<ButtonWidget>("FacingBtn");
+            //m_facing.
         }
 
         //public override void MeasureOverride(Vector2 parentAvailableSize)
@@ -112,6 +131,7 @@ namespace Game
             public SliderWidget m_countSlider;
             public SliderWidget m_countSlider2;
 
+
             public Action<int, int> m_handler;
 
             public int Width = 1000;
@@ -140,6 +160,7 @@ namespace Game
                 m_countSlider2.MaxValue = 2000f;
                 m_countSlider2.Granularity = 100f;
                 m_countSlider2.Value = Height;
+
             }
 
             public override void Update()
@@ -165,9 +186,6 @@ namespace Game
                         m_handler(Width, Height);
                     }
                 }
-
-
-
             }
         }
         public override void Update()
@@ -231,11 +249,32 @@ namespace Game
                 {
                     float size = 10;//82;
                     float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
-                    Vector3 eyePosition = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
-                    CefIns.ScreenNormalVector = eyePosition;
-                    Vector3[] uv = util.GetUVByPlaneNormal(eyePosition);
-                    Vector3 u = uv[0];
-                    Vector3 v = uv[1];
+
+                    Vector3 eyePosition;
+                    Vector3 u = new Vector3(0f, 1f/*UpProportion*/, 0f);
+                    Vector3 v = new Vector3(1f, 0f, 0f);
+                    if (FacingState == Facing.Eye)
+                    {
+                        eyePosition = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
+                        CefIns.ScreenNormalVector = eyePosition;
+                        Vector3[] uv = util.GetUVByPlaneNormal(eyePosition);
+                        u = uv[0];
+                        v = uv[1];
+                    }
+                    else if (FacingState == Facing.X)
+                    {
+                        CefIns.ScreenNormalVector = new Vector3(1, 0, 0);
+                        v = new Vector3(0, 0, 1);
+                    }
+                    else if (FacingState == Facing.Y)
+                    {
+                        CefIns.ScreenNormalVector = new Vector3(0, -1, 0);
+                        u = new Vector3(0, 0, 1/*UpProportion*/);
+                    }
+                    else if (FacingState == Facing.Z)
+                    {
+                        CefIns.ScreenNormalVector = new Vector3(0, 0, 1);
+                    }
                     CefIns.U = u;
                     CefIns.V = v;
 
@@ -343,6 +382,12 @@ namespace Game
                 }
                 m_componentPlayer.ComponentGui.DisplaySmallMessage("浏览器未开启！未找到可关闭的浏览器", Color.Orange, false, true);
 
+            }
+            else if (FacingBtn.IsClicked)
+            {
+                if ((int)FacingState < 3) FacingState = FacingState + 1;
+                else FacingState = Facing.X;
+                m_facing.Subtexture = ContentManager.Get<Subtexture>($"Textures/Facing_{FacingState}");
             }
             //m_componentPlayer.ComponentGui.DisplaySmallMessage("未选择购买商品", Color.White, blinking: true, playNotificationSound: true);
         }
