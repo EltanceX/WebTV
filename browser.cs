@@ -139,7 +139,7 @@ namespace Game
                 {
                     pattern.Texture.Dispose();
                     pattern = null;
-                    initPreview = false; 
+                    initPreview = false;
                     WebTV.RemoveInstanece(this);
                     return true;
                 }
@@ -180,7 +180,7 @@ namespace Game
             this.isTextureDrawingCompleted = false;
             try
             {
-                var performance = new PerformanceStatistic();
+                PerformanceStatistic performance = new PerformanceStatistic();
                 MemoryStream pngStream2 = new();
                 //browserData.bitmap = ImageScaler.ScaleImage(browserData.bitmap, 0.5f);
                 this.bitmap.Save(pngStream2, ImageFormat.Png);
@@ -200,9 +200,11 @@ namespace Game
                 //{
                 //    tex.SetData(i, array[i].Pixels);
                 //}
-                performance.end();
-                ScreenLog.Info($"Drawing time: {Math.Round(performance.runningTime, 2)}ms {Math.Round(1000 / performance.runningTime, 1)}fps");
-
+                if (WebTV.settings.DebugMode)
+                {
+                    performance.end();
+                    ScreenLog.Info($"Drawing time: {Math.Round(performance.runningTime, 2)}ms {Math.Round(1000 / performance.runningTime, 1)}fps");
+                }
 
 
 

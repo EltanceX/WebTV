@@ -127,6 +127,7 @@ namespace Game
 /destroy [x: Int] [y:Int] [z: Int]              在世界中破坏方块
 /cef stop      停止浏览器
      new [url] 在浏览器上加载链接
+     debug     切换WebTV调试模式
 ");
                             break;
                         default:
@@ -325,11 +326,11 @@ ETerminal 控制台组件
                     }
                     switch (parameter1)
                     {
-                        case "create":
-
+                        case "debug":
+                            WebTV.settings.DebugMode = !WebTV.settings.DebugMode;
+                            ScreenLog.Info($"WebTV DEBUG mode: {WebTV.settings.DebugMode}");
                             break;
                         case "new":
-
                             string cef_url = "www.baidu.com";
                             try
                             {
@@ -339,6 +340,7 @@ ETerminal 控制台组件
                             {
                                 ScreenLog.Info("URL格式错误！自动设置为www.baidu.com");
                             }
+                            CefIns = WebTV.GetNoneBrowserCef();
                             if (CefIns.Browser != null)
                             {
                                 ScreenLog.Info("浏览器已存在！");

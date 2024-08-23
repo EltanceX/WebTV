@@ -162,9 +162,14 @@ namespace Game
                             float d_eyeV = eyeToScreen / cosScreenNormalV_EyeV;
                             Vector3 forwardVecLengthen = forwardVector * d_eyeV;
                             Vector3 targetPointVec = eyePosition + forwardVecLengthen;//屏幕焦点坐标
-                            BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.1f, targetPointVec.Y - 0.1f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.1f, targetPointVec.Y + 0.1f, targetPointVec.Z + 0.1f);
-                            flatBatch3D.QueueBoundingBox(boundingBox2, Color.Blue);
-                            flatBatch3D.QueueLine(eyePosition, targetPointVec, Color.Red);
+
+                            if (WebTV.settings.DebugMode)
+                            {
+                                //鼠标位置+射线
+                                BoundingBox boundingBox2 = new BoundingBox(targetPointVec.X - 0.1f, targetPointVec.Y - 0.1f, targetPointVec.Z - 0.1f, targetPointVec.X + 0.1f, targetPointVec.Y + 0.1f, targetPointVec.Z + 0.1f);
+                                flatBatch3D.QueueBoundingBox(boundingBox2, Color.Blue);
+                                flatBatch3D.QueueLine(eyePosition, targetPointVec, Color.Red);
+                            }
 
                             //if (Mouse.IsMouseButtonDown(MouseButton.Left))
                             //{
@@ -194,28 +199,28 @@ namespace Game
                                 browserHost.SendMouseMoveEvent(mouseEvent, false);
                                 if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
                                 {
-                                    ScreenLog.Info("Set Left Click State: True");
+                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: True");
                                     browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
                                     //browserHost.
                                     CefIns.hasMouseDown = true;
                                 }
                                 else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
                                 {
-                                    ScreenLog.Info("Set Left Click State: False");
+                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: False");
                                     CefIns.hasMouseDown = false;
                                     browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
                                 }
 
                                 if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
                                 {
-                                    ScreenLog.Info("Set Right Click State: True");
+                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: True");
                                     browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
                                     //browserHost.
                                     CefIns.hasRightMouseDown = true;
                                 }
                                 else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
                                 {
-                                    ScreenLog.Info("Set Right Click State: False");
+                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: False");
                                     CefIns.hasRightMouseDown = false;
                                     browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
                                 }
@@ -287,11 +292,11 @@ namespace Game
                         CefIns.isFocused = true;
 
                         var temp = m_primitivesRenderer3D.TexturedBatch(pattern.Texture, useAlphaTest: true, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
-                        
+
                         //浏览器屏幕
                         //int count = temp.TriangleVertices.Count;
                         temp.QueueQuad(vector3, vector4, vector5, vector6, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), pattern.Color);
-                        
+
 
                         m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
 

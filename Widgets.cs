@@ -423,9 +423,9 @@ namespace Game
             }
             else if (ClosePageButton.IsClicked)
             {
-                CEF_Browser CefIns = WebTV.GetLastElement();
+                CEF_Browser CefIns = WebTV.GetLastTabElement();
 
-                if (CefIns != null && CefIns.Browser != null)
+                if (CefIns != null)
                 {
                     CefIns.Browser.Load("about:blank");
                     m_componentPlayer.ComponentGui.DisplaySmallMessage("当前标签页已关闭", Color.Green, false, true);

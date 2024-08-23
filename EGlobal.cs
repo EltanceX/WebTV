@@ -20,6 +20,15 @@ namespace Game
     public static class WebTV
     {
         public static ArrayList cefInstances = new ArrayList();
+        public static CEF_Browser GetLastTabElement()
+        {
+            for (int i = cefInstances.Count - 1; i >= 0; i--)
+            {
+                var cef = (CEF_Browser)cefInstances[i];
+                if (cef.Browser != null) return cef;
+            }
+            return null;
+        }
         public static CEF_Browser GetLastElement()
         {
             if (cefInstances.Count == 0) return null;
@@ -82,6 +91,7 @@ namespace Game
         {
             public static string defaultLink = "https://www.bing.com/search?q=bing";
             public static BrowserWidget KWidget;
+            public static bool DebugMode = true;
         }
     }
     public class PerformanceStatistic
