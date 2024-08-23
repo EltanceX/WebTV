@@ -340,14 +340,41 @@ ETerminal 控制台组件
                             {
                                 ScreenLog.Info("URL格式错误！自动设置为www.baidu.com");
                             }
-                            CefIns = WebTV.GetNoneBrowserCef();
+                            //CefIns = WebTV.GetNoneBrowserCef();
+                            //if (CefIns.Browser != null)
+                            //{
+                            //    ScreenLog.Info("浏览器已存在！");
+                            //    CefIns.Browser.Load(cef_url);
+                            //    return;
+                            //}
+                            //CefIns.Create(cef_url);
+
+
+
+                            CefIns = WebTV.GetNoneBrowserCef(); //仅预览
+                            if (CefIns == null)
+                            {
+                                CefIns = WebTV.GetLastTabElement();//存在标签
+                                //ScreenLog.Info("错误: 浏览器需要在预览屏幕上进行创建");
+                            }
+                            CefIns.link = cef_url;
+                            //else
+                            //{
                             if (CefIns.Browser != null)
                             {
-                                ScreenLog.Info("浏览器已存在！");
-                                CefIns.Browser.Load(cef_url);
+                                ScreenLog.Info("浏览器已存在，正在尝试加载页面...");
+                                try
+                                {
+                                    CefIns.Browser.Load(CefIns.link);
+                                }
+                                catch (Exception e)
+                                {
+                                    ScreenLog.Error(e);
+                                }
                                 return;
                             }
-                            CefIns.Create(cef_url);
+                            CefIns.Create();
+                            //}
                             break;
                         case "stop":
                             CefIns.Browser.Load("about:blank");
