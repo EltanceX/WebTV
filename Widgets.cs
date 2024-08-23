@@ -31,6 +31,7 @@ namespace Game
         //public ButtonWidget m_chooseButton;
 
         public ButtonWidget ResolvingPowerBtn;
+        public ButtonWidget ResizeBtn;
         public LabelWidget ResolvingPowerLabel;
         public TextBoxWidget ScreenPositionTextbox;
         public TextBoxWidget SiteAddrDialog;
@@ -49,6 +50,8 @@ namespace Game
         public int ResolvingPower_Height = 600;
 
         public int ResolvingPower_Width = 1000;
+
+        public float ScreenSize = 10.0f;
 
         public Vector3 playerPosition;
 
@@ -75,6 +78,7 @@ namespace Game
             //m_chooseitemLabel = Children.Find<LabelWidget>("ChooseItemLabel");
             //m_chooseitemcountLabel = Children.Find<LabelWidget>("ChooseItemCountLabel");
             ResolvingPowerBtn = Children.Find<ButtonWidget>("ResolvingPowerBtn");
+            ResizeBtn = Children.Find<ButtonWidget>("ResizeBtn");
             ResolvingPowerLabel = Children.Find<LabelWidget>("ResolvingPowerLabel");
             ScreenPositionTextbox = Children.Find<TextBoxWidget>("ScreenPositionTextbox");
             SiteAddrDialog = Children.Find<TextBoxWidget>("SiteAddrDialog");
@@ -118,7 +122,59 @@ namespace Game
         //    }
         //    base.MeasureOverride(parentAvailableSize);
         //}
-        public class ResovingPowerDialog : Dialog
+
+        public class ResizeDialog : Dialog
+        {
+            public ButtonWidget m_confirmButton;
+
+            public ButtonWidget m_addButton;
+
+            public ButtonWidget m_reduceButton;
+
+            public SliderWidget m_countSlider;
+
+
+            public Action<float> m_handler;
+
+            public float ScreenSize = 10f;
+
+            public ResizeDialog(float Size, Action<float> handler)
+            {
+                this.ScreenSize = Size;
+                XElement node = ContentManager.Get<XElement>("Dialogs/ResizeDialog");
+                LoadContents(this, node);
+                m_handler = handler;
+                m_confirmButton = Children.Find<ButtonWidget>("ConfirmButton");
+                m_countSlider = Children.Find<SliderWidget>("CountSlider");
+                m_addButton = Children.Find<ButtonWidget>("AddButton");
+                m_reduceButton = Children.Find<ButtonWidget>("ReduceButton");
+                m_countSlider.MinValue = 0.1f;
+                m_countSlider.MaxValue = 30f;
+                m_countSlider.Granularity = .1f;
+                m_countSlider.Value = Size;
+
+            }
+
+            public override void Update()
+            {
+                m_countSlider.Text = "Size (m):" + ScreenSize;
+                ScreenSize = MathUtils.Clamp(m_countSlider.Value, 0f, 30f);
+                m_addButton.IsEnabled = m_countSlider.Value < 30f;
+                m_reduceButton.IsEnabled = m_countSlider.Value > 0.1f;
+                if (m_reduceButton.IsClicked) m_countSlider.Value -= .1f;
+                else if (m_addButton.IsClicked) m_countSlider.Value += .1f;
+                else if (m_confirmButton.IsClicked)
+                {
+                    DialogsManager.HideDialog(this);
+                    if (m_handler != null)
+                    {
+                        m_handler(ScreenSize);
+                    }
+                }
+            }
+        }
+
+        public class ResolvingPowerDialog : Dialog
         {
             public ButtonWidget m_confirmButton;
 
@@ -137,11 +193,11 @@ namespace Game
             public int Width = 1000;
             public int Height = 600;
 
-            public ResovingPowerDialog(int ResolvingPower_Width, int ResolvingPower_Height, Action<int, int> handler)
+            public ResolvingPowerDialog(int ResolvingPower_Width, int ResolvingPower_Height, Action<int, int> handler)
             {
                 Width = ResolvingPower_Width;
                 Height = ResolvingPower_Height;
-                XElement node = ContentManager.Get<XElement>("Dialogs/ResovingPowerDialog");
+                XElement node = ContentManager.Get<XElement>("Dialogs/ResolvingPowerDialog");
                 LoadContents(this, node);
                 m_handler = handler;
                 m_confirmButton = Children.Find<ButtonWidget>("ConfirmButton");
@@ -213,10 +269,17 @@ namespace Game
 
             if (ResolvingPowerBtn.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new ResovingPowerDialog(ResolvingPower_Width, ResolvingPower_Height, delegate (int width, int height)
+                DialogsManager.ShowDialog(null, new ResolvingPowerDialog(ResolvingPower_Width, ResolvingPower_Height, delegate (int width, int height)
                 {
                     ResolvingPower_Height = height;
                     ResolvingPower_Width = width;
+                }));
+            }
+            else if (ResizeBtn.IsClicked)
+            {
+                DialogsManager.ShowDialog(null, new ResizeDialog(ScreenSize, delegate (float ScreenSize)
+                {
+                    this.ScreenSize = ScreenSize;
                 }));
             }
             else if (CreatePreviewButton.IsClicked)
@@ -247,7 +310,7 @@ namespace Game
 
                 try
                 {
-                    float size = 10;//82;
+                    float size = ScreenSize;//82;
                     float UpProportion = (float)ResolvingPower_Height / (float)ResolvingPower_Width;
 
                     Vector3 eyePosition;
@@ -311,7 +374,7 @@ namespace Game
                     //蓝色画笔
                     System.Drawing.Pen bluePen = new(System.Drawing.Color.GreenYellow, 5);
                     g.DrawRectangle(bluePen, 10, 10, cef_width - 10, cef_height - 10);
-                    g.DrawString($"\n  WebTV Mod - {DateTime.Now}\n  Size: {cef_width} * {cef_height} ({CefIns.posVec.X}, {CefIns.posVec.Y}, {CefIns.posVec.Z})\n  Site Link: {CefIns.link}\n  Browser screen ready.", font, brush, textArea);
+                    g.DrawString($"\n  WebTV Mod - {DateTime.Now}\n  Screen Siz: {ScreenSize}\n  Resolution: {cef_width} * {cef_height} ({CefIns.posVec.X}, {CefIns.posVec.Y}, {CefIns.posVec.Z})\n  Site Link: {CefIns.link}\n  Browser screen ready.", font, brush, textArea);
                     g.Dispose();
 
                     System.Drawing.Image image = bmPNG;// System.Drawing.Bitmap.FromFile("D:\\SurvivalCraft\\Temp\\icon.png");
