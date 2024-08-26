@@ -90,6 +90,10 @@ namespace Game
             var header = parsed.header;
             switch (header.ToLower())
             {
+                case "/crosshair":
+                    bool state = CrossHair.SwitchState();
+                    EGlobal.Player.ComponentGui.DisplaySmallMessage("Switching CROSSHAIR Display to: " + state, Engine.Color.LightGreen, false, true);
+                    break;
                 case "/help":
                     int page = 1;
                     try
@@ -128,6 +132,8 @@ namespace Game
 /cef stop      停止浏览器
      new [url] 在浏览器上加载链接
      debug     切换WebTV调试模式
+     mouseevent切换鼠标事件模式
+/crosshair     切换是否显示准心
 ");
                             break;
                         default:
@@ -326,6 +332,17 @@ ETerminal 控制台组件
                     }
                     switch (parameter1)
                     {
+                        case "mouseevent":
+                            bool MouseEventState = true;
+                            if (WebTV.cefInstances.Count == 0) return;
+                            foreach (var item in WebTV.cefInstances)
+                            {
+                                CEF_Browser cef = (CEF_Browser)item;
+                                cef.MouseEventEnabled = !cef.MouseEventEnabled;
+                                MouseEventState = cef.MouseEventEnabled;
+                            }
+                            EGlobal.Player.ComponentGui.DisplaySmallMessage("切换鼠标事件: " + MouseEventState, Color.Red, false, true);
+                            break;
                         case "debug":
                             WebTV.settings.DebugMode = !WebTV.settings.DebugMode;
                             ScreenLog.Info($"WebTV DEBUG mode: {WebTV.settings.DebugMode}");

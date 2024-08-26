@@ -123,6 +123,7 @@ namespace Game
         public Bitmap bitmap;
         public int height = 600;
         public int width = 1000;
+        public bool MouseEventEnabled = true;
 
         public Vector3 U;//Normal vector
         public Vector3 V;//...
@@ -181,10 +182,16 @@ namespace Game
             try
             {
                 PerformanceStatistic performance = new PerformanceStatistic();
-                MemoryStream pngStream2 = new();
+                //MemoryStream pngStream2 = new();
                 //browserData.bitmap = ImageScaler.ScaleImage(browserData.bitmap, 0.5f);
-                this.bitmap.Save(pngStream2, ImageFormat.Png);
-                pngStream2.Position = 0;
+                //this.bitmap.Save(pngStream2, ImageFormat.Png);
+                //pngStream2.Position = 0;
+                //if (WebTV.settings.DebugMode)
+                //{
+                //    performance.end();
+                //    ScreenLog.Info($"Copying time: {Math.Round(performance.runningTime, 2)}ms {Math.Round(1000 / performance.runningTime, 1)}fps");
+                //}
+
 
                 //browserData.p.Texture.Dispose();
 
@@ -192,10 +199,28 @@ namespace Game
                 //browserData.p.Texture = Texture2D.Load(pngStream2);
 
                 var tex = this.pattern.Texture;
-                Engine.Media.Image image = Engine.Media.Image.Load(pngStream2);
+                //Engine.Media.Image image = Engine.Media.Image.Load(pngStream2);
+
+
+                var image2 = new Engine.Media.Image(width, height);
+                System.Drawing.Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
+                BitmapData bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
+                byte[] pixelValues = new byte[bytes];
+                Marshal.Copy(bmpData.Scan0, pixelValues, 0, bytes);
+                //image2.Pixels = bitmap. //readonly
+                var bmpSize = bitmap.Width * bitmap.Height;
+                Engine.Color[] Pixels = new Engine.Color[bmpSize];
+                for (int i = 0; i < bmpSize; i++)
+                {
+                    int start = i * 4;
+                    Pixels[i] = new Engine.Color(pixelValues[start + 2], pixelValues[start + 1], pixelValues[start], pixelValues[start + 3]);
+                }//~20ms
+
+
                 //Engine.Media.Image[] array = Engine.Media.Image.GenerateMipmaps(image, 1).ToArray();
                 //ScreenLog.Info($"{tex.Height} {tex.Width} {tex.Height * tex.Width}");
-                tex.SetData(0, image.Pixels);
+                tex.SetData(0, Pixels);
                 //for (int i = 0; i < array.Length; i++)
                 //{
                 //    tex.SetData(i, array[i].Pixels);
@@ -208,9 +233,9 @@ namespace Game
 
 
 
-
+                bitmap.UnlockBits(bmpData);
                 this.bitmap.Dispose();
-                pngStream2.Dispose();
+                //pngStream2.Dispose();
             }
             catch (Exception e)
             {

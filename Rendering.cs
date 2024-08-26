@@ -196,44 +196,47 @@ namespace Game
                                 //ScreenLog.Info($"MouseMove Vector: {upper_left_X} {upper_left_Y}");
                                 var mouseEvent = new CefSharp.MouseEvent(upper_left_X, upper_left_Y, CefEventFlags.None);
                                 var browserHost = CefIns.Browser.GetBrowserHost();
-                                browserHost.SendMouseMoveEvent(mouseEvent, false);
-                                if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
-                                {
-                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: True");
-                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
-                                    //browserHost.
-                                    CefIns.hasMouseDown = true;
-                                }
-                                else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
-                                {
-                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: False");
-                                    CefIns.hasMouseDown = false;
-                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
-                                }
 
-                                if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
+                                if (CefIns.MouseEventEnabled)
                                 {
-                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: True");
-                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
-                                    //browserHost.
-                                    CefIns.hasRightMouseDown = true;
-                                }
-                                else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
-                                {
-                                    if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: False");
-                                    CefIns.hasRightMouseDown = false;
-                                    browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
-                                }
+                                    browserHost.SendMouseMoveEvent(mouseEvent, false);
+                                    if (!CefIns.hasMouseDown && Mouse.IsMouseButtonDown(MouseButton.Left))
+                                    {
+                                        if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: True");
+                                        browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, false, 1);
+                                        //browserHost.
+                                        CefIns.hasMouseDown = true;
+                                    }
+                                    else if (CefIns.hasMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Left))
+                                    {
+                                        if (WebTV.settings.DebugMode) ScreenLog.Info("Set Left Click State: False");
+                                        CefIns.hasMouseDown = false;
+                                        browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Left, true, 1);
+                                    }
 
-                                if (Mouse.MouseWheelMovement > 0)
-                                {
-                                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
-                                }
-                                else if (Mouse.MouseWheelMovement < 0)
-                                {
-                                    CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
-                                }
+                                    if (!CefIns.hasRightMouseDown && Mouse.IsMouseButtonDown(MouseButton.Right))
+                                    {
+                                        if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: True");
+                                        browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, false, 1);
+                                        //browserHost.
+                                        CefIns.hasRightMouseDown = true;
+                                    }
+                                    else if (CefIns.hasRightMouseDown && !Mouse.IsMouseButtonDown(MouseButton.Right))
+                                    {
+                                        if (WebTV.settings.DebugMode) ScreenLog.Info("Set Right Click State: False");
+                                        CefIns.hasRightMouseDown = false;
+                                        browserHost.SendMouseClickEvent(mouseEvent, MouseButtonType.Right, true, 1);
+                                    }
 
+                                    if (Mouse.MouseWheelMovement > 0)
+                                    {
+                                        CefIns.Browser.SendMouseWheelEvent(0, 0, 0, 30, CefEventFlags.None);
+                                    }
+                                    else if (Mouse.MouseWheelMovement < 0)
+                                    {
+                                        CefIns.Browser.SendMouseWheelEvent(0, 0, 0, -30, CefEventFlags.None);
+                                    }
+                                }
                             }
                             //}
 

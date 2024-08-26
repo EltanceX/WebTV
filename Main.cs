@@ -530,6 +530,10 @@ namespace Game
 
             WebTV.settings.KWidget = new BrowserWidget(componentPlayer);
 
+            Texture2D AtlasTexture = TextureAtlasManager.AtlasTexture;
+            CrossHair.crosshairT = TextureAtlasManager.m_subtextures["Textures/Atlas/Crosshair"];
+            CrossHair.crosshairF = new Subtexture(AtlasTexture, new Vector2(0), new Vector2(0));
+
             EGlobal.isFirstLoad = false;
             //ScreenLog.Info("\n");
             ScreenLog.Info("WebTV Mod - SurvivalCraft2.3 API 1.53");

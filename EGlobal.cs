@@ -17,6 +17,20 @@ using System.Numerics;
 
 namespace Game
 {
+    public static class CrossHair
+    {
+        public static bool isDisplaying = true;
+        public static Subtexture crosshairT;
+        public static Subtexture crosshairF;
+
+        public static bool SwitchState()
+        {
+            if (isDisplaying) TextureAtlasManager.m_subtextures["Textures/Atlas/Crosshair"] = crosshairF;
+            else TextureAtlasManager.m_subtextures["Textures/Atlas/Crosshair"] = crosshairT;
+            return isDisplaying = !isDisplaying;
+        }
+    }
+
     public static class WebTV
     {
         public static ArrayList cefInstances = new ArrayList();
